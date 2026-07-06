@@ -1,46 +1,36 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
-  const authHeader = req.header("Authorization");
-
-  if (!authHeader) {
-    return res.status(401).json({ message: "No token" });
-  }
-
   try {
-    const token = authHeader.replace("Bearer ", "");
+    const authHeader = req.headers.authorization;
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallbacksecret");
+    // 1. Check header exists
+    if (!authHeader) {
+      return res.status(401).json({ message: "Authorization header missing" });
+    }
 
-    // 🔥 IMPORTANT FIX HERE
+    // 2. Format check: Bearer token
+    if (!authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Invalid token format" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    // 3. Verify token
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "fallbacksecret"
+    );
+
+    // 4. Attach user info safely
     req.userId = decoded.userId;
 
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    console.error("Auth Middleware Error:", err.message);
+
+    return res.status(401).json({
+      message: "Unauthorized: Invalid or expired token",
+    });
   }
 };
-
-/*const jwt = require("jsonwebtoken");
-
-
-const JWT_SECRET = process.env.JWT_SECRET || "fallbacksecret";
-
-module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.userId = decoded.userId;
-    next();
-    
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-}; */

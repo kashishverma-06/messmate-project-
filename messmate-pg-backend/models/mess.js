@@ -1,35 +1,24 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const pool = require("../config/db");
 
-const Mess = sequelize.define('Mess', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notnull: {msg: "Name is required"},
-      len: { args: [3,100], msg:"Name must be 3-100 character"}
-    }
-  },
-  location: {
-    type: DataTypes.STRING,
-    allowNull: false ,
-    validate: {
-      notEmpty: {msg : "Location cannot be empty"}
-    }
+// TABLE CREATE (run once when server starts)
+const createTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS messes (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        location VARCHAR(255) NOT NULL,
+        price INT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
 
-  },
-  price: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      isInt: {msg: "Price must be an integer"},
-      min: {args : [1000], msg: "Price must be at least 1000"}
-    }
+    console.log("✅ Mess table ready");
+  } catch (err) {
+    console.error("❌ Table creation error:", err.message);
   }
-}, {
-  tableName: 'messes',
-  timestamps: true
-});
+};
 
-module.exports = Mess;
+createTable();
 
+module.exports = pool;

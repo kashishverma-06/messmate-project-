@@ -1,0 +1,40 @@
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 200px;
+}
+
+/* ================= SPINNER ================= */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  border: 5px solid rgba(90, 62, 54, 0.15); /* light choco */
+  border-top: 5px solid #5a3e36; /* main chocolate */
+
+  animation: spin 0.9s linear infinite;
+  box-shadow: 0 0 12px rgba(90, 62, 54, 0.2);
+}
+
+/* ================= TEXT ================= */
+.spinner-text {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #7a5c52; /* soft chocolate */
+  letter-spacing: 0.5px;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

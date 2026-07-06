@@ -1,46 +1,57 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
+const express = require("express");
 const cors = require("cors");
-const morgan = require('morgan');
+const morgan = require("morgan");
 
 const app = express();
+const pool = require("./config/db");
 
-const sequelize = require('./config/db');
-const Mess = require('./models/mess');
-
-const messRoutes = require('./routes/messRoutes');
-const authRoutes = require('./routes/auth');
+const messRoutes = require("./routes/messRoutes");
+const authRoutes = require("./routes/auth");
 
 const PORT = process.env.PORT || 5000;
 
-//------------MIDDLEWARE------------
+
+// ================= MIDDLEWARE =================
 app.use(express.json());
-app.use(cors());
-app.use(morgan('dev'))
+app.use(cors({
+  origin: "*", // frontend dev safe
+}));
+app.use(morgan("dev"));
 
-//-----------ROUTES----------------
 
-app.use('/messes', messRoutes);
-app.use('/api/auth', authRoutes);
+// ================= ROUTES =================
+app.use("/messes", messRoutes);
+app.use("/api/auth", authRoutes);
 
-//--------------TEST ROUTE ---------
-app.get('/' , (req,res)=> {
-  res.send("API IS RUNNING ......");
+
+// ================= HEALTH CHECK =================
+app.get("/", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json({
+      message: "API IS RUNNING 🚀",
+      time: result.rows[0],
+    });
+  } catch (err) {
+    console.error("ROOT ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
-//---------DB & SERVER START --------
-sequelize.authenticate()
-  .then(() => {
-    console.log('✅ PostgreSQL connected');
-    return sequelize.sync();
-  })
-  .then(() => {
-    console.log('✅ Models synced to database');
-    app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('❌ DB error:', err.message);
+
+// ================= GLOBAL ERROR HANDLER =================
+app.use((err, req, res, next) => {
+  console.error("GLOBAL ERROR:", err);
+  res.status(500).json({
+    message: "Something went wrong",
+    error: err.message,
   });
+});
+
+
+// ================= SERVER START =================
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});

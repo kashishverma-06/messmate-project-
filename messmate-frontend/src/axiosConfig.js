@@ -1,30 +1,35 @@
-import axios from 'axios';
+import axios from "axios";
 
 const axiosInstance = axios.create({
-   baseURL: 'http://localhost:4000/api/auth'
+  baseURL: "http://localhost:5000", // ✅ ONLY ROOT URL
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-},
-(error) => Promise.reject(error)
+// ================= REQUEST INTERCEPTOR =================
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
-
-//Response Interceptor
+// ================= RESPONSE INTERCEPTOR =================
 axiosInstance.interceptors.response.use(
-  (response) => response ,
+  (response) => response,
   (error) => {
-    if(error.response && error.response.status === 401){
-      alert("Your session has expired . Please log in again .");
-      localStorage.removeItem("token"); //optional but recommended
+    if (error.response?.status === 401) {
+      alert("Session expired. Please login again.");
+
+      localStorage.removeItem("token");
+
       window.location.href = "/login";
     }
+
     return Promise.reject(error);
   }
 );

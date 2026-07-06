@@ -1,95 +1,145 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Mess = require('../models/mess');
-const { Op } = require('sequelize');
+const pool = require("../config/db");
 
-// GET all messes
 
-router.get('/', async (req, res) => {
+// ================= GET ALL MESSES =================
+router.get("/", async (req, res) => {
   try {
-    const whereClause = {};
+    const { location, minPrice, limit, offset } = req.query;
 
-    if (req.query.location) {
-      whereClause.location = req.query.location;
+    let query = "SELECT * FROM messes WHERE 1=1";
+    let values = [];
+    let count = 1;
+
+    if (location) {
+      query += ` AND location ILIKE $${count}`;
+      values.push(`%${location}%`);
+      count++;
     }
 
-    if (req.query.minPrice) {
-      whereClause.price = { [Op.gte]: parseInt(req.query.minPrice) };
+    if (minPrice) {
+      query += ` AND price >= $${count}`;
+      values.push(parseInt(minPrice));
+      count++;
     }
 
-const messes = await Mess.findAll({
-  where: whereClause,
-  limit: parseInt(req.query.limit) || 100,
-  offset: parseInt(req.query.offset) || 0
-});
-    res.json(messes);
+    query += ` ORDER BY id DESC LIMIT $${count} OFFSET $${count + 1}`;
+    values.push(parseInt(limit) || 100);
+    values.push(parseInt(offset) || 0);
+
+    const result = await pool.query(query, values);
+
+    res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    console.error("GET MESSES ERROR:", err);
+    res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
   }
 });
 
-//Get by id 
 
-router.get('/:id', async (req, res) => {
+// ================= GET BY ID =================
+router.get("/:id", async (req, res) => {
   try {
-    const mess = await Mess.findByPk(req.params.id);
+    const result = await pool.query(
+      "SELECT * FROM messes WHERE id = $1",
+      [req.params.id]
+    );
+
+    const mess = result.rows[0];
+
     if (!mess) {
-      return res.status(404).json({ message: 'Mess not found' });
+      return res.status(404).json({ message: "Mess not found" });
     }
+
     res.json(mess);
   } catch (err) {
-    res.status(400).json({ message: 'Invalid ID format' });
+    res.status(400).json({
+      message: "Invalid ID format",
+      error: err.message,
+    });
   }
 });
 
-// POST new mess
 
-router.post('/', async (req, res) => {
+// ================= CREATE MESSS =================
+router.post("/", async (req, res) => {
   try {
     const { name, location, price } = req.body;
-    const newMess = await Mess.create({ name, location, price });
-    res.status(201).json(newMess);
-  } catch (err) {
-    if(err.name === 'sequelizeValidationError') {
-      const messages = err.errors.map(e => e.message);
-      return res.status(400).json({message: 'Validation Error', error:messages});
+
+    if (!name || !location || !price) {
+      return res.status(400).json({
+        message: "name, location, price required",
+      });
     }
-    res.status(400).json({ message: 'Invalid input', error: err.message });
-    // res.status(500).json({message: 'Internal Server Error'});//lms
+
+    const result = await pool.query(
+      "INSERT INTO messes (name, location, price) VALUES ($1, $2, $3) RETURNING *",
+      [name, location, price]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("POST MESSES ERROR:", err);
+    res.status(400).json({
+      message: "Invalid input",
+      error: err.message,
+    });
   }
 });
 
-//Update  mess 
 
-router.put('/:id', async (req, res) => {
+// ================= UPDATE MESSS =================
+router.put("/:id", async (req, res) => {
   try {
-    const mess = await Mess.findByPk(req.params.id);
-    if (!mess) {
-      return res.status(404).json({ message: 'Mess not found' });
-    }
-
     const { name, location, price } = req.body;
-    await mess.update({ name, location, price });
 
-    res.json({ message: 'Mess updated successfully', mess });
+    const result = await pool.query(
+      `UPDATE messes 
+       SET name = $1, location = $2, price = $3 
+       WHERE id = $4 
+       RETURNING *`,
+      [name, location, price, req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Mess not found" });
+    }
+
+    res.json({
+      message: "Mess updated successfully",
+      mess: result.rows[0],
+    });
   } catch (err) {
-    res.status(400).json({ message: 'Invalid input', error: err.message });
+    res.status(400).json({
+      message: "Invalid input",
+      error: err.message,
+    });
   }
 });
 
-// Delete a mess 
 
-router.delete('/:id', async (req, res) => {
+// ================= DELETE MESSS =================
+router.delete("/:id", async (req, res) => {
   try {
-    const mess = await Mess.findByPk(req.params.id);
-    if (!mess) {
-      return res.status(404).json({ message: 'Mess not found' });
+    const result = await pool.query(
+      "DELETE FROM messes WHERE id = $1 RETURNING *",
+      [req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Mess not found" });
     }
 
-    await mess.destroy();
-    res.json({ message: 'Mess deleted successfully' });
+    res.json({ message: "Mess deleted successfully" });
   } catch (err) {
-    res.status(400).json({ message: 'Delete failed', error: err.message });
+    res.status(400).json({
+      message: "Delete failed",
+      error: err.message,
+    });
   }
 });
 

@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
+import "./LoadingSpinner.css";
 
 function LoadingSpinner() {
   return (
-    <div>
-      <h3>Loading...</h3>
+    <div className="spinner-container">
+      <div className="spinner"></div>
+      <p className="spinner-text">Loading...</p>
     </div>
   );
 }

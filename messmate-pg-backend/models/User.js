@@ -1,19 +1,22 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const createTable = async () => {
+  try {
+    console.log("Creating users table...");
 
-const User = sequelize.define('User', {
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+
+    console.log("✅ Users table ready");
+  } catch (err) {
+    console.error("❌ User table error FULL:", err);
   }
-}, {
-  tableName: 'users',
-  timestamps: true
-});
+};
 
-module.exports = User;
+createTable();
+
+module.exports = pool;
