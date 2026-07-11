@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -18,53 +23,68 @@ import Profile from "./pages/Profile";
 import MessList from "./components/MessList";
 import AddMessForm from "./components/AddMessForm";
 
+// Component to handle Navbar visibility
+function AppContent() {
+  const location = useLocation();
+
+  const hideNavbar =
+    location.pathname === "/login" ||
+    location.pathname === "/signup";
+
+  return (
+    <>
+      {!hideNavbar && <Navbar />}
+
+      <Routes>
+        {/* PUBLIC HOME */}
+        <Route path="/" element={<Home />} />
+
+        {/* AUTH */}
+        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/login" element={<LoginForm />} />
+
+        {/* PROTECTED DASHBOARD */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* PROFILE */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* MESS SYSTEM */}
+        <Route
+          path="/messes"
+          element={
+            <ProtectedRoute>
+              <div>
+                <AddMessForm />
+                <MessList />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-
-        <Routes>
-          {/* PUBLIC HOME */}
-          <Route path="/" element={<Home />} />
-
-          {/* AUTH */}
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/login" element={<LoginForm />} />
-
-          {/* PROTECTED DASHBOARD */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* PROFILE (PROTECTED) */}
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* MESS SYSTEM (PROTECTED - IMPORTANT FIX) */}
-          <Route
-            path="/messes"
-            element={
-              <ProtectedRoute>
-                <div>
-                  <AddMessForm />
-                  <MessList />
-                </div>
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        <AppContent />
       </Router>
     </AuthProvider>
   );

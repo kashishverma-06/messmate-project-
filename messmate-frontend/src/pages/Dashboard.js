@@ -1,29 +1,49 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import axios from "../axiosConfig";
+import "../App.css";
 
 const Dashboard = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
-  const token = localStorage.getItem("token");
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("/api/auth/profile");
+        setProfile(res.data);
+      } catch (err) {
+        console.log("Profile Error:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   return (
     <div className="dashboard-container">
-      <h1>Welcome to Dashboard 🚀</h1>
+      <div className="dashboard-card">
 
-      {user && (
-        <div>
-          <p><strong>Username:</strong> {user.username || "N/A"}</p>
+        <h1>Welcome to Dashboard 🚀</h1>
+
+        <div className="user-info">
+          <p>
+            <strong>Username:</strong>{" "}
+            {profile?.username || "Loading..."}
+          </p>
+
+          <p>
+            <strong>User ID:</strong>{" "}
+            {profile?.id || "Loading..."}
+          </p>
         </div>
-      )}
 
-      <p>
-        <strong>Token:</strong>{" "}
-        {token ? token.slice(0, 20) + "..." : "No token found"}
-      </p>
+        <button onClick={logout} className="logout-btn">
+          Logout
+        </button>
 
-      <button onClick={logout} className="logout-btn">
-        Logout
-      </button>
+      </div>
     </div>
   );
 };

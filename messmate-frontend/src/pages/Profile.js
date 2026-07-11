@@ -29,6 +29,7 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
+       <div className="profile-card">
       <h2>Profile 👤</h2>
 
       {profile ? (
@@ -45,6 +46,7 @@ const Profile = () => {
         <p>No profile data found</p>
       )}
     </div>
+    </div> 
   );
 };
 

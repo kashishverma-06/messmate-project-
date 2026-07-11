@@ -74,7 +74,7 @@ const LoginForm = () => {
 
         <p
           className="auth-link"
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/signup")}
           style={{ cursor: "pointer" }}
         >
           Don't have an account? Register
