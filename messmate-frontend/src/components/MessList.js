@@ -11,13 +11,9 @@ function MessList({ refresh }) {
   const [location, setLocation] = useState("");
 
 
-
   useEffect(() => {
-
     fetchMesses();
-
   }, [location, refresh]);
-
 
 
 
@@ -27,27 +23,21 @@ function MessList({ refresh }) {
 
       setLoading(true);
 
-
       const url = location
         ? `/messes?location=${encodeURIComponent(location)}`
         : "/messes";
 
 
-
       const res = await axios.get(url);
-
 
       setMesses(res.data);
 
 
-    } catch(err){
+    } catch (err) {
 
-      console.log("FETCH ERROR:",err);
+      console.log("FETCH ERROR:", err);
 
-
-      toast.error(
-        "Failed to load messes"
-      );
+      toast.error("Failed to load messes");
 
 
     } finally {
@@ -60,38 +50,26 @@ function MessList({ refresh }) {
 
 
 
+  const handleDelete = async (id) => {
 
-
-
-  const handleDelete = async(id)=>{
-
-
-    const confirmDelete =
-    window.confirm(
+    const confirmDelete = window.confirm(
       "Are you sure you want to delete this mess?"
     );
 
 
-    if(!confirmDelete)
-      return;
+    if (!confirmDelete) return;
 
 
+    try {
 
-    try{
-
-
-      await axios.delete(
-        `/messes/${id}`
-      );
+      await axios.delete(`/messes/${id}`);
 
 
-
-      setMesses((prev)=>
+      setMesses((prev) =>
         prev.filter(
-          (mess)=>mess.id !== id
+          (mess) => mess.id !== id
         )
       );
-
 
 
       toast.success(
@@ -99,21 +77,13 @@ function MessList({ refresh }) {
       );
 
 
+    } catch (err) {
 
-    }
-    catch(err){
-
-
-      console.log(
-        "DELETE ERROR:",
-        err
-      );
-
+      console.log("DELETE ERROR:", err);
 
       toast.error(
         "Delete failed"
       );
-
 
     }
 
@@ -121,47 +91,26 @@ function MessList({ refresh }) {
 
 
 
+  const handleEdit = async (id, data) => {
 
+    try {
 
-
-
-
-  const handleEdit = async(id,data)=>{
-
-
-    try{
-
-
-      const res =
-      await axios.put(
+      const res = await axios.put(
         `/messes/${id}`,
         data
       );
 
 
-
-      setMesses((prev)=>
-
-        prev.map((mess)=>
-
+      setMesses((prev) =>
+        prev.map((mess) =>
           mess.id === id
-
-          ?
-
-          (
-            res.data.mess
-            ||
-            res.data
-          )
-
-          :
-
-          mess
-
+            ? (
+                res.data.mess ||
+                res.data
+              )
+            : mess
         )
-
       );
-
 
 
       toast.success(
@@ -169,10 +118,7 @@ function MessList({ refresh }) {
       );
 
 
-
-    }
-    catch(err){
-
+    } catch (err) {
 
       console.log(
         "EDIT ERROR:",
@@ -184,21 +130,17 @@ function MessList({ refresh }) {
         "Update failed"
       );
 
-
     }
 
   };
 
 
 
-
-
-  if(loading){
+  if (loading) {
 
     return <LoadingSpinner />;
 
   }
-
 
 
 
@@ -209,7 +151,6 @@ function MessList({ refresh }) {
 
       <div className="mess-header">
 
-
         <h2>
           🍛 Mess Listings
         </h2>
@@ -219,10 +160,7 @@ function MessList({ refresh }) {
           Find and manage available mess services
         </p>
 
-
       </div>
-
-
 
 
 
@@ -230,18 +168,10 @@ function MessList({ refresh }) {
 
 
         <select
-
-        className="form-select"
-
-        value={location}
-
-        onChange={
-          (e)=>
-          setLocation(e.target.value)
-        }
-
+          className="form-select"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
         >
-
 
           <option value="">
             All Locations
@@ -275,21 +205,16 @@ function MessList({ refresh }) {
 
 
 
-
-
       <div className="mess-count">
 
-
         Total Messes:
+
         <strong>
           {" "}
           {messes.length}
         </strong>
 
-
       </div>
-
-
 
 
 
@@ -297,47 +222,43 @@ function MessList({ refresh }) {
       <div className="card-container">
 
 
-      {
-        messes.length === 0
+        {
+          messes.length === 0
 
-        ?
+          ?
 
-        (
-          <p className="empty-message">
-            No mess found 😕
-          </p>
-        )
+          (
+            <p className="empty-message">
+              No mess found 😕
+            </p>
+          )
 
-        :
+          :
 
-        (
+          (
 
-          messes.map(
-            (mess)=>(
+            messes.map((mess) => (
 
               <MessCard
 
-              key={mess.id}
+                key={mess.id}
 
-              mess={mess}
+                mess={mess}
 
-              onDelete={handleDelete}
+                onDelete={handleDelete}
 
-              onEdit={handleEdit}
+                onEdit={handleEdit}
 
               />
 
-            )
+            ))
+
           )
 
-        )
-
-      }
-
+        }
 
 
       </div>
-
 
 
     </div>
