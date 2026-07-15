@@ -20,6 +20,9 @@ import Profile from "./pages/Profile";
 import MessList from "./components/MessList";
 import AddMessForm from "./components/AddMessForm";
 
+// Toast Import
+import { Toaster } from "react-hot-toast";
+
 
 function AppContent() {
 
@@ -124,10 +127,12 @@ function AppContent() {
         <Route
           path="*"
           element={
-            <div style={{
-              textAlign:"center",
-              marginTop:"100px"
-            }}>
+            <div
+              style={{
+                textAlign:"center",
+                marginTop:"100px"
+              }}
+            >
               <h1>
                 404
               </h1>
@@ -142,6 +147,13 @@ function AppContent() {
 
 
       </Routes>
+
+
+      {/* Toast Container */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
 
 
     </>
