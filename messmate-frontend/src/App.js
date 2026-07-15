@@ -8,42 +8,66 @@ import {
 
 import { AuthProvider } from "./context/AuthContext";
 
-// Components
 import Navbar from "./components/Navbar";
 import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Pages
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 
-// Mess System
 import MessList from "./components/MessList";
 import AddMessForm from "./components/AddMessForm";
 
-// Component to handle Navbar visibility
+
 function AppContent() {
+
   const location = useLocation();
+
 
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/signup";
 
+
   return (
+
     <>
-      {!hideNavbar && <Navbar />}
+
+      {
+        !hideNavbar && <Navbar />
+      }
+
 
       <Routes>
-        {/* PUBLIC HOME */}
-        <Route path="/" element={<Home />} />
 
-        {/* AUTH */}
-        <Route path="/signup" element={<SignupForm />} />
-        <Route path="/login" element={<LoginForm />} />
 
-        {/* PROTECTED DASHBOARD */}
+        {/* PUBLIC ROUTES */}
+
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
+
+        <Route
+          path="/signup"
+          element={<SignupForm />}
+        />
+
+
+        <Route
+          path="/login"
+          element={<LoginForm />}
+        />
+
+
+
+
+        {/* PROTECTED ROUTES */}
+
+
         <Route
           path="/dashboard"
           element={
@@ -53,7 +77,8 @@ function AppContent() {
           }
         />
 
-        {/* PROFILE */}
+
+
         <Route
           path="/profile"
           element={
@@ -63,31 +88,87 @@ function AppContent() {
           }
         />
 
-        {/* MESS SYSTEM */}
+
+
+
+        {/* ADD MESS */}
+
+        <Route
+          path="/add-mess"
+          element={
+            <ProtectedRoute>
+              <AddMessForm />
+            </ProtectedRoute>
+          }
+        />
+
+
+
+
+        {/* ALL MESSES */}
+
         <Route
           path="/messes"
           element={
             <ProtectedRoute>
-              <div>
-                <AddMessForm />
-                <MessList />
-              </div>
+              <MessList />
             </ProtectedRoute>
           }
         />
+
+
+
+
+        {/* FALLBACK */}
+
+        <Route
+          path="*"
+          element={
+            <div style={{
+              textAlign:"center",
+              marginTop:"100px"
+            }}>
+              <h1>
+                404
+              </h1>
+
+              <p>
+                Page not found
+              </p>
+
+            </div>
+          }
+        />
+
+
       </Routes>
+
+
     </>
+
   );
+
 }
 
-function App() {
-  return (
+
+
+function App(){
+
+  return(
+
     <AuthProvider>
+
       <Router>
+
         <AppContent />
+
       </Router>
+
     </AuthProvider>
+
   );
+
 }
+
 
 export default App;

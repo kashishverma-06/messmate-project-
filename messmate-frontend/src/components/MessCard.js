@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import "./Mess.css";
 
 function MessCard({ mess, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -10,7 +12,6 @@ function MessCard({ mess, onDelete, onEdit }) {
     price: "",
   });
 
-  // sync prop → state safely
   useEffect(() => {
     setFormData({
       name: mess.name || "",
@@ -26,30 +27,59 @@ function MessCard({ mess, onDelete, onEdit }) {
     });
   };
 
-  // UPDATE
-  const handleUpdate = () => {
-    if (!formData.name || !formData.location || !formData.price) {
-      alert("All fields are required!");
+  const handleUpdate = async () => {
+    if (!formData.name.trim() || !formData.location.trim() || !formData.price) {
+      toast.error("All fields are required!");
       return;
     }
 
-    onEdit(mess.id, {
-      ...formData,
-      price: Number(formData.price),
-    });
+    if (Number(formData.price) <= 0) {
+      toast.error("Price must be greater than zero!");
+      return;
+    }
 
-    setIsEditing(false);
+    try {
+      setLoading(true);
+
+      await onEdit(mess.id, {
+        name: formData.name.trim(),
+        location: formData.location.trim(),
+        price: Number(formData.price),
+      });
+
+      toast.success("Mess updated successfully 🎉");
+
+      setIsEditing(false);
+
+    } catch (error) {
+      toast.error("Failed to update mess");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // DELETE
+
   const handleDelete = () => {
-    onDelete(mess.id);
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this mess?"
+    );
+
+    if (confirmDelete) {
+      onDelete(mess.id);
+      toast.success("Mess deleted successfully 🗑️");
+    }
+
   };
+
 
   return (
     <div className="mess-card">
+
       {isEditing ? (
+
         <div className="mess-edit-form">
+
           <input
             name="name"
             value={formData.name}
@@ -71,13 +101,18 @@ function MessCard({ mess, onDelete, onEdit }) {
             type="number"
             value={formData.price}
             onChange={handleChange}
-            placeholder="Price"
+            placeholder="Monthly Price"
             className="form-input"
           />
 
           <div className="btn-group">
-            <button onClick={handleUpdate} className="save-btn">
-              Save
+
+            <button
+              onClick={handleUpdate}
+              className="save-btn"
+              disabled={loading}
+            >
+              {loading ? "Saving..." : "Save"}
             </button>
 
             <button
@@ -86,15 +121,32 @@ function MessCard({ mess, onDelete, onEdit }) {
             >
               Cancel
             </button>
+
           </div>
+
         </div>
+
       ) : (
+
         <div className="mess-view">
+
+          <div className="mess-icon">
+            🍱
+          </div>
+
           <h3>{mess.name}</h3>
-          <p>📍 {mess.location}</p>
-          <p className="price">₹{mess.price}/month</p>
+
+          <p>
+            📍 {mess.location}
+          </p>
+
+          <p className="price">
+            ₹{Number(mess.price).toLocaleString("en-IN")}/month
+          </p>
+
 
           <div className="btn-group">
+
             <button
               onClick={() => setIsEditing(true)}
               className="edit-btn"
@@ -108,9 +160,13 @@ function MessCard({ mess, onDelete, onEdit }) {
             >
               Delete
             </button>
+
           </div>
+
         </div>
+
       )}
+
     </div>
   );
 }

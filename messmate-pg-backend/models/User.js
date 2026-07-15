@@ -1,22 +1,35 @@
-const createTable = async () => {
+const pool = require("../config/db");
+
+const createMessTable = async () => {
+
   try {
-    console.log("Creating users table...");
+
+    console.log("Creating mess table...");
 
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
+      CREATE TABLE IF NOT EXISTS messes (
         id SERIAL PRIMARY KEY,
-        username VARCHAR(50) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        location VARCHAR(255) NOT NULL,
+        price INT NOT NULL,
         created_at TIMESTAMP DEFAULT NOW()
       );
     `);
 
-    console.log("✅ Users table ready");
-  } catch (err) {
-    console.error("❌ User table error FULL:", err);
+
+    console.log("✅ Mess table ready");
+
+
+  } catch(err){
+
+    console.error(
+      "❌ Mess table error:",
+      err.message
+    );
+
   }
+
 };
 
-createTable();
 
-module.exports = pool;
+module.exports = createMessTable;

@@ -1,18 +1,26 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "../App.css";
+import axios from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
+import "../styles/Auth.css";
 
 const SignupForm = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     username: "",
+    email: "",
     password: "",
+    confirmPassword: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  const [message, setMessage] = useState({
+    type: "",
+    text: "",
+  });
 
   const handleChange = (e) => {
     setForm({
@@ -21,78 +29,198 @@ const SignupForm = () => {
     });
   };
 
+  const validateForm = () => {
+    if (!form.username.trim()) {
+      return "Username is required";
+    }
+
+    if (form.username.trim().length < 3) {
+      return "Username must contain minimum 3 characters";
+    }
+
+    if (!form.email.trim()) {
+      return "Email is required";
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(form.email)) {
+      return "Please enter a valid email";
+    }
+
+    if (form.password.length < 6) {
+      return "Password must contain minimum 6 characters";
+    }
+
+    if (form.password !== form.confirmPassword) {
+      return "Passwords do not match";
+    }
+
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
-    if (!form.username || !form.password) {
-      setError("All fields are required");
+    setMessage({
+      type: "",
+      text: "",
+    });
+
+    const error = validateForm();
+
+    if (error) {
+      setMessage({
+        type: "error",
+        text: error,
+      });
       return;
     }
 
     try {
       setLoading(true);
 
-      await axios.post(
-        "http://localhost:5000/api/auth/register",
-        form
-      );
+      await axios.post("/api/auth/register", {
+        username: form.username.trim(),
+        email: form.email.trim(),
+        password: form.password,
+      });
 
-      alert("Registration successful 🎉 Please login");
+      setMessage({
+        type: "success",
+        text: "Account created successfully 🎉 Redirecting to login...",
+      });
 
-      setForm({ username: "", password: "" });
+      setForm({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
 
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Registration failed"
-      );
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.message ||
+          "Registration failed. Please try again.",
+      });
+
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
+    <div className="auth-page">
+      <div className="auth-card">
 
-        <div className="input-group">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
+        <div className="auth-header">
+          <h1>🍱 Join MessMate Today</h1>
+          <p>
+            Create your account and discover affordable,
+            hygienic and trusted mess services near you.
+          </p>
         </div>
 
-        <div className="input-group">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form className="auth-form" onSubmit={handleSubmit}>
 
-        <button className="auth-btn" type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              value={form.username}
+              onChange={handleChange}
+            />
+          </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          <div className="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter email address"
+              value={form.email}
+              onChange={handleChange}
+            />
+          </div>
 
-        <p
-          className="auth-link"
-          onClick={() => navigate("/login")}
-          style={{ cursor: "pointer" }}
-        >
-          Already have an account? Login
-        </p>
-      </form>
+          <div className="form-group">
+            <label>Password</label>
+
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Create password"
+                value={form.password}
+                onChange={handleChange}
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Confirm Password</label>
+
+            <div className="password-wrapper">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm password"
+                value={form.confirmPassword}
+                onChange={handleChange}
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
+                }
+              >
+                {showConfirmPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          <button className="auth-btn" disabled={loading}>
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+
+          {message.text && (
+            <p
+              className={
+                message.type === "error"
+                  ? "error-message"
+                  : "success-message"
+              }
+            >
+              {message.text}
+            </p>
+          )}
+
+          <p className="auth-switch">
+            Already have an account?
+            <span onClick={() => navigate("/login")}>
+              Login
+            </span>
+          </p>
+
+        </form>
+
+      </div>
     </div>
   );
 };

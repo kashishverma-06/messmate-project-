@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000", // ✅ ONLY ROOT URL
+  baseURL:
+    process.env.REACT_APP_API_BASE_URL ||
+    "http://localhost:5000",
 });
 
 // ================= REQUEST INTERCEPTOR =================
@@ -23,10 +25,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      alert("Session expired. Please login again.");
-
       localStorage.removeItem("token");
-
       window.location.href = "/login";
     }
 

@@ -1,81 +1,137 @@
-import React, { useContext , useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import toast from "react-hot-toast";
 import "./Navbar.css";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
-  const [menuOpen , setMenuOpen] = useState(false);
+  const handleLogout = () => {
+    const confirmLogout = window.confirm(
+      "Are you sure you want to logout?"
+    );
+
+    if (!confirmLogout) return;
+
+    logout();
+
+    toast.success("Logged out successfully 👋");
+
+    navigate("/login");
+
+    closeMenu();
+  };
 
   return (
     <nav className="navbar">
+
+      {/* LOGO */}
       <div className="nav-left">
-        <Link to="/" className="logo">
-          MessMate
-        </Link>
+        <NavLink
+          to="/"
+          className="logo"
+          onClick={closeMenu}
+        >
+          🍱 MessMate
+        </NavLink>
       </div>
 
+      {/* MOBILE BUTTON */}
+      <button
+        className="hamburger"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? "✖" : "☰"}
+      </button>
+
+      {/* NAV LINKS */}
       <div
-      className = "hamburger"
-      onClick={() => setMenuOpen(!menuOpen)}
-      > 
-      {menuOpen ? "✖" : "☰"}
-      </div>
+        className={`nav-right ${menuOpen ? "active" : ""}`}
+      >
 
-      <div className={ `nav-right ${menuOpen ? "active " : "" }`}>
-
-        {/* ✅ HOME ADDED BACK */}
-        <Link to="/" className="nav-link"
-        onClick={() => setMenuOpen(false)}>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "nav-link active-link" : "nav-link"
+          }
+          onClick={closeMenu}
+        >
           Home
-        </Link>
+        </NavLink>
 
         {!user && (
           <>
-            <Link to="/login" className="nav-link"
-            onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                isActive ? "nav-link active-link" : "nav-link"
+              }
+              onClick={closeMenu}
+            >
               Login
-            </Link>
+            </NavLink>
 
-            <Link to="/signup" className="nav-link"
-            onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/signup"
+              className={({ isActive }) =>
+                isActive ? "nav-link active-link" : "nav-link"
+              }
+              onClick={closeMenu}
+            >
               Signup
-            </Link>
+            </NavLink>
           </>
         )}
 
         {user && (
           <>
-            <Link to="/dashboard" className="nav-link"
-            onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                isActive ? "nav-link active-link" : "nav-link"
+              }
+              onClick={closeMenu}
+            >
               Dashboard
-            </Link>
+            </NavLink>
 
-            {/* Mess page */}
-            <Link to="/messes" className="nav-link"
-            onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/messes"
+              className={({ isActive }) =>
+                isActive ? "nav-link active-link" : "nav-link"
+              }
+              onClick={closeMenu}
+            >
               Messes
-            </Link>
+            </NavLink>
 
-            <Link to="/profile" className="nav-link"
-            onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "nav-link active-link" : "nav-link"
+              }
+              onClick={closeMenu}
+            >
               Profile
-            </Link>
+            </NavLink>
 
-            <button className="logout-btn" onClick={() => {handleLogout(); setMenuOpen(false);
-            }
-            }>
+            <button
+              className="logout-btn"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </>
         )}
+
       </div>
     </nav>
   );
