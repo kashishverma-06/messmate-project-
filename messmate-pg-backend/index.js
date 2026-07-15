@@ -9,7 +9,7 @@ const app = express();
 const pool = require("./config/db");
 
 // Table creators
-const createUserTable = require("./models/user");
+const createUserTable = require("./models/User");
 const createMessTable = require("./models/mess");
 
 const messRoutes = require("./routes/messRoutes");
