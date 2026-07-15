@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import axios from "../axiosConfig";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import "../styles/Login.css";
-
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -16,11 +16,6 @@ const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [message, setMessage] = useState({
-    type: "",
-    text: "",
-  });
 
   const handleChange = (e) => {
     setForm({
@@ -44,18 +39,10 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setMessage({
-      type: "",
-      text: "",
-    });
-
     const error = validateForm();
 
     if (error) {
-      setMessage({
-        type: "error",
-        text: error,
-      });
+      toast.error(error);
       return;
     }
 
@@ -69,22 +56,17 @@ const LoginForm = () => {
 
       login(res.data.token);
 
-      setMessage({
-        type: "success",
-        text: "Login successful 🎉 Redirecting...",
-      });
+      toast.success("Login successful 🎉");
 
       setTimeout(() => {
         navigate("/dashboard");
       }, 1000);
 
     } catch (err) {
-      setMessage({
-        type: "error",
-        text:
-          err.response?.data?.message ||
-          "Login failed. Please try again.",
-      });
+      toast.error(
+        err.response?.data?.message ||
+        "Login failed. Please try again."
+      );
 
     } finally {
       setLoading(false);
@@ -108,7 +90,10 @@ const LoginForm = () => {
 
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form
+          className="auth-form"
+          onSubmit={handleSubmit}
+        >
 
           <div className="form-group">
 
@@ -159,18 +144,8 @@ const LoginForm = () => {
           </button>
 
 
-          {message.text && (
-            <p className={
-              message.type === "error"
-              ? "error-message"
-              : "success-message"
-            }>
-              {message.text}
-            </p>
-          )}
-
-
           <p className="auth-switch">
+
             Don't have an account?
 
             <span onClick={() => navigate("/signup")}>
@@ -178,7 +153,6 @@ const LoginForm = () => {
             </span>
 
           </p>
-
 
         </form>
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import "../styles/Auth.css";
 
 const SignupForm = () => {
@@ -16,11 +17,6 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [message, setMessage] = useState({
-    type: "",
-    text: "",
-  });
 
   const handleChange = (e) => {
     setForm({
@@ -62,18 +58,10 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setMessage({
-      type: "",
-      text: "",
-    });
-
     const error = validateForm();
 
     if (error) {
-      setMessage({
-        type: "error",
-        text: error,
-      });
+      toast.error(error);
       return;
     }
 
@@ -86,10 +74,7 @@ const SignupForm = () => {
         password: form.password,
       });
 
-      setMessage({
-        type: "success",
-        text: "Account created successfully 🎉 Redirecting to login...",
-      });
+      toast.success("Account created successfully 🎉");
 
       setForm({
         username: "",
@@ -103,12 +88,10 @@ const SignupForm = () => {
       }, 1500);
 
     } catch (err) {
-      setMessage({
-        type: "error",
-        text:
-          err.response?.data?.message ||
-          "Registration failed. Please try again.",
-      });
+      toast.error(
+        err.response?.data?.message ||
+        "Registration failed. Please try again."
+      );
 
     } finally {
       setLoading(false);
@@ -117,20 +100,31 @@ const SignupForm = () => {
 
   return (
     <div className="auth-page">
+
       <div className="auth-card">
 
         <div className="auth-header">
-          <h1>🍱 Join MessMate Today</h1>
+
+          <h1>
+            🍱 Join MessMate Today
+          </h1>
+
           <p>
             Create your account and discover affordable,
             hygienic and trusted mess services near you.
           </p>
+
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form 
+          className="auth-form" 
+          onSubmit={handleSubmit}
+        >
 
           <div className="form-group">
+
             <label>Username</label>
+
             <input
               type="text"
               name="username"
@@ -138,10 +132,13 @@ const SignupForm = () => {
               value={form.username}
               onChange={handleChange}
             />
+
           </div>
 
           <div className="form-group">
+
             <label>Email Address</label>
+
             <input
               type="email"
               name="email"
@@ -149,12 +146,15 @@ const SignupForm = () => {
               value={form.email}
               onChange={handleChange}
             />
+
           </div>
 
           <div className="form-group">
+
             <label>Password</label>
 
             <div className="password-wrapper">
+
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -169,13 +169,17 @@ const SignupForm = () => {
               >
                 {showPassword ? "🙈" : "👁️"}
               </button>
+
             </div>
+
           </div>
 
           <div className="form-group">
+
             <label>Confirm Password</label>
 
             <div className="password-wrapper">
+
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -186,41 +190,35 @@ const SignupForm = () => {
 
               <button
                 type="button"
-                onClick={() =>
-                  setShowConfirmPassword(!showConfirmPassword)
-                }
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? "🙈" : "👁️"}
               </button>
+
             </div>
+
           </div>
 
-          <button className="auth-btn" disabled={loading}>
+          <button 
+            className="auth-btn" 
+            disabled={loading}
+          >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
 
-          {message.text && (
-            <p
-              className={
-                message.type === "error"
-                  ? "error-message"
-                  : "success-message"
-              }
-            >
-              {message.text}
-            </p>
-          )}
-
           <p className="auth-switch">
             Already have an account?
+
             <span onClick={() => navigate("/login")}>
               Login
             </span>
+
           </p>
 
         </form>
 
       </div>
+
     </div>
   );
 };
