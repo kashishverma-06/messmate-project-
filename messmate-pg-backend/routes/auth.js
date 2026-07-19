@@ -73,7 +73,10 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials." });
@@ -85,7 +88,10 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    return res.status(200).json({ token });
+    return res.status(200).json({
+      message: "Login successful",
+      token
+    });
 
   } catch (error) {
     console.error("LOGIN ERROR:", error);
