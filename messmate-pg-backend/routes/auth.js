@@ -11,18 +11,18 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallbacksecret";
 
 // ================= REGISTER =================
 router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!username || !password) {
+  if (!username || !email || !password) {
     return res
       .status(400)
-      .json({ message: "Username and password are required." });
+      .json({ message: "Username, email and password are required." });
   }
 
   try {
     const existingUser = await pool.query(
-      "SELECT * FROM users WHERE username = $1",
-      [username]
+      "SELECT * FROM users WHERE username = $1 OR email = $2",
+      [username, email]
     );
 
     if (existingUser.rows.length > 0) {
@@ -32,16 +32,18 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await pool.query(
-      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
-      [username, hashedPassword]
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id",
+      [username, email, hashedPassword]
     );
 
     return res.status(201).json({
       message: "User registered successfully",
       userId: newUser.rows[0].id,
     });
+
   } catch (error) {
     console.error("REGISTER ERROR:", error);
+
     return res
       .status(500)
       .json({ message: "Registration failed due to server error." });
@@ -87,7 +89,10 @@ router.post("/login", async (req, res) => {
 
   } catch (error) {
     console.error("LOGIN ERROR:", error);
-    return res.status(500).json({ message: "Login failed due to server error." });
+
+    return res
+      .status(500)
+      .json({ message: "Login failed due to server error." });
   }
 });
 
@@ -104,7 +109,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
     }
 
     const result = await pool.query(
-      "SELECT id, username FROM users WHERE id = $1",
+      "SELECT id, username, email FROM users WHERE id = $1",
       [req.userId]
     );
 
@@ -118,8 +123,10 @@ router.get("/profile", authMiddleware, async (req, res) => {
 
   } catch (err) {
     console.error("PROFILE ERROR:", err);
+
     return res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 module.exports = router;
