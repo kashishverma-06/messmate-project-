@@ -1,5 +1,3 @@
-module.exports = createMessTable;
-
 const pool = require("../config/db");
 
 const createUserTable = async () => {
