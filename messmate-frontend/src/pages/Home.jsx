@@ -1,852 +1,513 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React,{useEffect,useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "../axiosConfig";
 import "../styles/Home.css";
 
-const Home = () => {
-  const navigate = useNavigate();
-
-  const [messes, setMesses] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchMesses = async () => {
-      try {
-        const res = await axios.get("/messes");
+const Home=()=>{
 
-        setMesses(res.data.slice(0, 3));
+const navigate=useNavigate();
 
-      } catch (error) {
-        console.log("HOME DATA ERROR:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+const token=localStorage.getItem("token");
+const role=localStorage.getItem("role");
 
-    fetchMesses();
-  }, []);
 
+const [messes,setMesses]=useState([]);
+const [loading,setLoading]=useState(true);
 
-  const features = [
-    {
-      icon: "🍱",
-      title: "Quality Food",
-      desc: "Fresh and hygienic meals from trusted mess providers."
-    },
-    {
-      icon: "🔍",
-      title: "Easy Discovery",
-      desc: "Find the best mess according to your location."
-    },
-    {
-      icon: "💰",
-      title: "Affordable Plans",
-      desc: "Choose food plans that match your budget."
-    },
-    {
-      icon: "⭐",
-      title: "Trusted Messes",
-      desc: "Connect with reliable food services."
-    }
-  ];
 
 
-  const locations = [
-    ...new Set(messes.map((mess) => mess.location))
-  ];
+useEffect(()=>{
 
+const fetchMesses=async()=>{
 
-  const averagePrice = messes.length
-    ? Math.round(
-        messes.reduce(
-          (sum, mess) => sum + Number(mess.price),
-          0
-        ) / messes.length
-      )
-    : 0;
+try{
 
+const res=await axios.get("/messes");
 
-  return (
-    <div className="home">
+setMesses(res.data.slice(0,3));
 
-      {/* HERO SECTION */}
 
-      <section className="hero">
+}catch(err){
 
-        <div className="hero-content">
+console.log("HOME ERROR",err);
 
-          <h1>
-            Find Your Perfect Mess
-            <span> Near You</span>
-          </h1>
+}
+finally{
 
-          <p>
-            Discover affordable, hygienic and trusted mess
-            services with MessMate.
-          </p>
+setLoading(false);
 
+}
 
-          <div className="hero-buttons">
-
-            <button
-              className="primary-btn"
-              onClick={() => navigate("/messes")}
-            >
-              Explore Messes
-            </button>
-
-
-            <button
-              className="secondary-btn"
-              onClick={() => navigate("/add-mess")}
-            >
-              Register Your Mess
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div className="hero-image">
-
-          <div className="food-card">
-
-            🍛
-
-            <h3>
-              Fresh Meals
-            </h3>
-
-            <p>
-              Healthy Food Everyday
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      {/* FEATURES */}
-
-      <section className="features">
-
-        <h2>
-          Why Choose MessMate?
-        </h2>
-
-
-        <div className="feature-container">
-
-          {
-            features.map((item,index)=>(
-              <div
-                className="feature-card"
-                key={index}
-              >
-
-                <div className="feature-icon">
-                  {item.icon}
-                </div>
-
-
-                <h3>
-                  {item.title}
-                </h3>
-
-
-                <p>
-                  {item.desc}
-                </p>
-
-              </div>
-            ))
-          }
-
-        </div>
-
-      </section>
-
-
-
-      {/* FEATURED MESSES */}
-
-      <section className="featured">
-
-        <h2>
-          Popular Messes 🍽️
-        </h2>
-
-
-        <div className="mess-container">
-
-          {
-            loading ? (
-
-              <p>
-                Loading messes...
-              </p>
-
-            ) : messes.length ? (
-
-              messes.map((mess)=>(
-                <div
-                  className="mess-card"
-                  key={mess.id}
-                >
-
-                  <div className="mess-image">
-                    🍽️
-                  </div>
-
-
-                  <h3>
-                    {mess.name}
-                  </h3>
-
-
-                  <p>
-                    📍 {mess.location}
-                  </p>
-
-
-                  <p>
-                    💰 ₹{mess.price}/month
-                  </p>
-
-
-                  <button
-                    onClick={() => navigate("/messes")}
-                  >
-                    View Messes
-                  </button>
-
-
-                </div>
-              ))
-
-            ) : (
-
-              <p>
-                No mess available
-              </p>
-
-            )
-          }
-
-        </div>
-
-      </section>
-
-
-
-      {/* HOW IT WORKS */}
-
-      <section className="how">
-
-        <h2>
-          How MessMate Works?
-        </h2>
-
-
-        <div className="steps">
-
-          <div>
-            <span>1</span>
-            <h3>Search</h3>
-            <p>
-              Find mess near your location.
-            </p>
-          </div>
-
-
-          <div>
-            <span>2</span>
-            <h3>Compare</h3>
-            <p>
-              Compare prices and facilities.
-            </p>
-          </div>
-
-
-          <div>
-            <span>3</span>
-            <h3>Connect</h3>
-            <p>
-              Connect with mess providers.
-            </p>
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      {/* DYNAMIC STATS */}
-
-      <section className="stats">
-
-
-        <div>
-          <h2>
-            {messes.length}+
-          </h2>
-
-          <p>
-            Featured Messes
-          </p>
-        </div>
-
-
-        <div>
-          <h2>
-            {locations.length}+
-          </h2>
-
-          <p>
-            Locations
-          </p>
-        </div>
-
-
-        <div>
-          <h2>
-            ₹{averagePrice}
-          </h2>
-
-          <p>
-            Average Price
-          </p>
-        </div>
-
-
-        <div>
-          <h2>
-            100%
-          </h2>
-
-          <p>
-            Trusted
-          </p>
-        </div>
-
-
-      </section>
-
-
-
-      {/* CTA */}
-
-      <section className="owner-section">
-
-        <h2>
-          Own a Mess?
-        </h2>
-
-
-        <p>
-          Register your mess and connect with more students.
-        </p>
-
-
-        <button
-          onClick={() => navigate("/add-mess")}
-        >
-          Register Now
-        </button>
-
-      </section>
-
-
-    </div>
-  );
 };
 
-export default Home;
-/*import React from "react";
-import "../styles/Home.css";
-
-const Home = () => {
-  const features = [
-    {
-      icon: "🍱",
-      title: "Quality Food",
-      desc: "Enjoy fresh, hygienic and tasty meals from trusted mess providers."
-    },
-    {
-      icon: "🔍",
-      title: "Easy Discovery",
-      desc: "Find the best mess options near your college or workplace."
-    },
-    {
-      icon: "💰",
-      title: "Affordable Plans",
-      desc: "Compare prices and choose plans that fit your budget."
-    },
-    {
-      icon: "⭐",
-      title: "Verified Messes",
-      desc: "Connect with reliable and student-friendly mess services."
-    }
-  ];
 
+fetchMesses();
 
-  const messes = [
-    {
-      name:"Sharma Food Corner",
-      location:"Bhopal",
-      price:"₹2500/month",
-      rating:"4.8"
-    },
-    {
-      name:"Royal Student Mess",
-      location:"Indore",
-      price:"₹3000/month",
-      rating:"4.6"
-    },
-    {
-      name:"Healthy Kitchen",
-      location:"Khandwa",
-      price:"₹2200/month",
-      rating:"4.7"
-    }
-  ];
 
+},[]);
 
-  return (
-    <div className="home">
 
 
-      {/* HERO SECTION }
 
-      <section className="hero">
 
-        <div className="hero-content">
+const exploreMesses=()=>{
 
-          <h1>
-            Find Your Perfect Mess
-            <span> Near You</span>
-          </h1>
+if(token){
 
-          <p>
-            Discover affordable, hygienic and trusted mess services
-            with MessMate. Find food that fits your lifestyle and budget.
-          </p>
+navigate("/messes");
 
+}
+else{
 
-          <div className="hero-buttons">
+navigate("/login");
 
-            <button className="primary-btn">
-              Explore Messes
-            </button>
+}
 
-            <button className="secondary-btn">
-              Register Your Mess
-            </button>
+};
 
-          </div>
 
-        </div>
 
 
-        <div className="hero-image">
 
-          <div className="food-card">
+const becomePartner=()=>{
 
-            🍛
 
-            <h3>
-              Fresh Meals
-            </h3>
+if(!token){
 
-            <p>
-              Daily Healthy Food
-            </p>
+navigate("/login");
+return;
 
-          </div>
+}
 
 
-        </div>
+if(role==="owner"){
 
+navigate("/add-mess");
 
-      </section>
+}
+else{
 
+alert("Only mess owners can register");
 
+}
 
-      {/* SEARCH SECTION /}
 
+};
 
-      <section className="search-section">
 
-        <h2>
-          Search Your Mess
-        </h2>
 
 
-        <div className="search-box">
+const locations=[
+...new Set(
+messes.map(
+item=>item.location
+)
+)
+];
 
-          <input 
-            placeholder="Enter Location"
-          />
 
 
-          <select>
 
-            <option>
-              Food Type
-            </option>
 
-            <option>
-              Veg
-            </option>
+return(
 
-            <option>
-              Non Veg
-            </option>
+<div className="home">
 
-          </select>
 
 
+{/* HERO SECTION */}
 
-          <select>
 
-            <option>
-              Budget
-            </option>
+<section className="hero">
 
-            <option>
-              Below ₹2000
-            </option>
 
-            <option>
-              ₹2000 - ₹3000
-            </option>
+<div className="hero-content">
 
 
-          </select>
+<h1>
 
+Find Affordable &
+Trusted Mess Services
 
-          <button>
-            Search
-          </button>
+<span>
+ Near You
+</span>
 
+</h1>
 
-        </div>
 
 
-      </section>
+<p>
 
+Discover hygienic, affordable and trusted
+mess services around your location with MessMate.
 
+</p>
 
 
-      {/* FEATURES }
 
+<div className="hero-buttons">
 
-      <section className="features">
 
-        <h2>
-          Why Choose MessMate?
-        </h2>
+<button
+className="primary-btn"
+onClick={exploreMesses}
+>
 
+Explore More Messes
 
-        <div className="feature-container">
+</button>
 
 
-        {
-          features.map((item,index)=>(
 
-            <div className="feature-card" key={index}>
+<button
+className="secondary-btn"
+onClick={becomePartner}
+>
 
-              <div className="feature-icon">
-                {item.icon}
-              </div>
+Become Mess Partner
 
-              <h3>
-                {item.title}
-              </h3>
+</button>
 
-              <p>
-                {item.desc}
-              </p>
 
+</div>
 
-            </div>
 
 
-          ))
-        }
+</div>
 
 
-        </div>
 
 
-      </section>
 
+<div className="hero-image">
 
 
+<img
 
+src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
 
-      {/* FEATURED MESSES }
+alt="Mess kitchen"
 
+/>
 
-      <section className="featured">
 
 
-        <h2>
-          Popular Messes
-        </h2>
+<div className="hero-floating-card">
 
+⭐ 4.8 Rating
 
+</div>
 
-        <div className="mess-container">
 
 
-        {
-          messes.map((mess,index)=>(
+</div>
 
-            <div className="mess-card" key={index}>
 
 
-              <div className="mess-image">
-                🍽️
-              </div>
+</section>
 
 
-              <h3>
-                {mess.name}
-              </h3>
 
 
-              <p>
-                📍 {mess.location}
-              </p>
 
 
-              <p>
-                💰 {mess.price}
-              </p>
 
 
-              <p>
-                ⭐ {mess.rating}
-              </p>
 
+{/* FEATURED MESSES */}
 
-              <button>
-                View Details
-              </button>
 
 
-            </div>
+<section className="featured">
 
 
-          ))
-        }
+<h2>
 
+Popular Mess Services
 
-        </div>
+</h2>
 
 
-      </section>
 
+<p>
 
+Explore trusted food providers near you.
 
+</p>
 
 
 
-      {/* HOW IT WORKS }
 
+<div className="mess-container">
 
-      <section className="how">
 
 
-        <h2>
-          How MessMate Works?
-        </h2>
+{
 
+loading ?
 
 
-        <div className="steps">
+<h3>
+Loading messes...
+</h3>
 
 
-          <div>
-            <span>
-              1
-            </span>
+:
 
-            <h3>
-              Search
-            </h3>
 
-            <p>
-              Find mess near your location.
-            </p>
+messes.length ?
 
-          </div>
 
+messes.map(
+(mess)=>(
 
 
-          <div>
+<div
+className="mess-card"
+key={mess.id}
+>
 
-            <span>
-              2
-            </span>
 
-            <h3>
-              Compare
-            </h3>
 
-            <p>
-              Compare prices and facilities.
-            </p>
+<div className="mess-image">
 
-          </div>
 
+<img
 
+src={
+mess.image_url ||
+"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
+}
 
+alt={mess.name}
 
-          <div>
+/>
 
-            <span>
-              3
-            </span>
 
-            <h3>
-              Connect
-            </h3>
+</div>
 
-            <p>
-              Contact mess owner easily.
-            </p>
 
-          </div>
 
 
 
-        </div>
+<h3>
+{mess.name}
+</h3>
 
 
-      </section>
 
+<p>
+📍 {mess.location}
+</p>
 
 
 
+<p>
+₹{mess.price}/month
+</p>
 
 
-      {/* CTA }
 
 
-      <section className="owner-section">
+<div className="rating">
 
+⭐ {Number(mess.rating || 0).toFixed(1)}
 
-        <h2>
-          Own a Mess?
-        </h2>
+</div>
 
 
-        <p>
-          Grow your mess business and reach more students with MessMate.
-        </p>
 
 
-        <button>
-          Register Now
-        </button>
+<button
+onClick={exploreMesses}
+>
 
+View Details
 
-      </section>
+</button>
 
 
 
 
+</div>
 
 
-      {/* STATS }
+)
 
+)
 
-      <section className="stats">
 
 
-        <div>
-          <h2>
-            500+
-          </h2>
+:
 
-          <p>
-            Students
-          </p>
 
-        </div>
+<p>
+No mess available
+</p>
 
 
 
-        <div>
+}
 
-          <h2>
-            100+
-          </h2>
 
-          <p>
-            Mess Partners
-          </p>
+</div>
 
-        </div>
 
 
+</section>
 
-        <div>
 
-          <h2>
-            20+
-          </h2>
 
-          <p>
-            Locations
-          </p>
 
-        </div>
 
 
 
-        <div>
 
-          <h2>
-            4.8 ⭐
-          </h2>
 
-          <p>
-            Rating
-          </p>
+{/* HOW IT WORKS */}
 
-        </div>
 
 
-      </section>
+<section className="how">
 
 
+<h2>
 
-    </div>
-  );
+How MessMate Works?
+
+</h2>
+
+
+
+<div className="steps">
+
+
+
+<div>
+
+<span>
+1
+</span>
+
+<h3>
+Create Account
+</h3>
+
+<p>
+Register your account.
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<span>
+2
+</span>
+
+<h3>
+Search Mess
+</h3>
+
+<p>
+Find nearby mess.
+</p>
+
+</div>
+
+
+
+
+
+<div>
+
+<span>
+3
+</span>
+
+<h3>
+Check Details
+</h3>
+
+<p>
+Compare price & rating.
+</p>
+
+</div>
+
+
+
+
+
+<div>
+
+<span>
+4
+</span>
+
+<h3>
+Connect Owner
+</h3>
+
+<p>
+Start your food journey.
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+{/* FINAL CTA */}
+
+
+
+<section className="owner-section">
+
+
+<h2>
+
+Ready To Find Your Perfect Mess?
+
+</h2>
+
+
+<p>
+
+Join MessMate and discover trusted food services.
+
+</p>
+
+
+
+<button
+onClick={exploreMesses}
+>
+
+Explore More Messes
+
+</button>
+
+
+
+</section>
+
+
+
+</div>
+
+);
+
 };
 
 
 export default Home;
-
-/*import React from "react";
-
-const Home = () => {
-  return (
-    <div className="home-container">
-      <div className="home-card">
-        <h1>Welcome to MessMate 🏠</h1>
-        <p>Your trusted platform to find and manage mess easily.</p>
-      </div>
-    </div>
-  );
-};
-
-export default Home;*/

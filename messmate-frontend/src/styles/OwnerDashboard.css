@@ -1,0 +1,190 @@
+.owner-dashboard{
+  min-height:100vh;
+  background:#f5f0eb;
+  padding:40px 6%;
+}
+
+
+.owner-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:40px;
+}
+
+
+.owner-header h1{
+  color:#6d5b50;
+  font-size:32px;
+}
+
+
+.owner-header p{
+  color:#777;
+  margin-top:10px;
+}
+
+
+.add-mess-btn{
+  background:#8a7a70;
+  color:white;
+  border:none;
+  padding:14px 25px;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+
+.add-mess-btn:hover{
+  background:#6d5b50;
+}
+
+
+
+.owner-stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:25px;
+}
+
+
+
+.owner-card{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+
+.owner-card h3{
+  color:#777;
+  font-size:15px;
+}
+
+
+.owner-card h2{
+  color:#8a7a70;
+  margin:15px 0;
+  font-size:30px;
+}
+
+
+.owner-card p{
+  color:#999;
+}
+
+
+
+
+.owner-actions{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:25px;
+}
+
+
+
+.action-box{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+
+.action-box h2{
+  color:#6d5b50;
+}
+
+
+.action-box p{
+  color:#777;
+  margin:15px 0;
+}
+
+
+.action-box button{
+  background:#8a7a70;
+  color:white;
+  border:none;
+  padding:12px 25px;
+  border-radius:25px;
+  cursor:pointer;
+}
+
+
+
+.recent-section{
+  margin-top:40px;
+}
+
+
+.recent-section h2{
+  color:#6d5b50;
+}
+
+
+.empty-owner{
+  margin-top:20px;
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+}
+
+
+.empty-owner span{
+  font-size:45px;
+}
+
+
+.empty-owner h3{
+  color:#6d5b50;
+}
+
+
+
+@media(max-width:900px){
+
+.owner-header{
+  flex-direction:column;
+  gap:20px;
+  align-items:flex-start;
+}
+
+
+.owner-stats{
+ grid-template-columns:repeat(2,1fr);
+}
+
+
+.owner-actions{
+ grid-template-columns:1fr;
+}
+
+
+}
+
+
+
+@media(max-width:600px){
+
+.owner-dashboard{
+ padding:25px 5%;
+}
+
+
+.owner-stats{
+ grid-template-columns:1fr;
+}
+
+
+.owner-header h1{
+ font-size:24px;
+}
+
+
+}

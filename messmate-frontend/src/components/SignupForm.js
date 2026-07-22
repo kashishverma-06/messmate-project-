@@ -12,6 +12,7 @@ const SignupForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +38,9 @@ const SignupForm = () => {
     if (!form.email.trim()) {
       return "Email is required";
     }
+    if (!form.role) {
+  return "Please select account type";
+}
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -72,6 +76,7 @@ const SignupForm = () => {
         username: form.username.trim(),
         email: form.email.trim(),
         password: form.password,
+          role: form.role,
       });
 
       toast.success("Account created successfully 🎉");
@@ -81,6 +86,7 @@ const SignupForm = () => {
         email: "",
         password: "",
         confirmPassword: "",
+        role:"",
       });
 
       setTimeout(() => {
@@ -198,6 +204,22 @@ const SignupForm = () => {
             </div>
 
           </div>
+
+          <div className="form-group">
+
+  <label>Account Type</label>
+
+  <select
+    name="role"
+    value={form.role}
+    onChange={handleChange}
+  >
+    <option value="">Select Account Type</option>
+    <option value="user">👤 User</option>
+    <option value="owner">🏪 Mess Owner</option>
+  </select>
+
+</div>
 
           <button 
             className="auth-btn" 

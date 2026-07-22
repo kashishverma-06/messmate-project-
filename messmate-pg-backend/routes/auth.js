@@ -11,12 +11,12 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallbacksecret";
 
 // ================= REGISTER =================
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password ,role } = req.body;
 
-  if (!username || !email || !password) {
+  if (!username || !email || !password || !role) {
     return res
       .status(400)
-      .json({ message: "Username, email and password are required." });
+      .json({ message: "Username, email, password and account type  are required." });
   }
 
   try {
@@ -32,8 +32,8 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await pool.query(
-      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id",
-      [username, email, hashedPassword]
+      "INSERT INTO users (username, email, password, role ) VALUES ($1, $2, $3, $4) RETURNING id",
+      [username, email, hashedPassword, role]
     );
 
     return res.status(201).json({
@@ -83,14 +83,17 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id },
+      { userId: user.id,
+        role: user.role,
+       },
       JWT_SECRET,
       { expiresIn: "1d" }
     );
 
     return res.status(200).json({
       message: "Login successful",
-      token
+      token,
+      role:user.role
     });
 
   } catch (error) {
@@ -115,7 +118,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
     }
 
     const result = await pool.query(
-      "SELECT id, username, email FROM users WHERE id = $1",
+      "SELECT id, username, email, role  FROM users WHERE id = $1",
       [req.userId]
     );
 

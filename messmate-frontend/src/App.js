@@ -17,34 +17,38 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 
-import MessList from "./components/MessList";
-import AddMessForm from "./components/AddMessForm";
+import AboutUs from "./components/AboutUs";
+import ContactUs from "./components/ContactUs";
+import OwnerDashboard from "./components/OwnerDashboard";
 
-// Toast Import
+import MessList from "./components/MessList";
+import MessDetails from "./components/MessDetails";
+import AddMessForm from "./components/AddMessForm";
+import Footer from "./components/Footer";
+
 import { Toaster } from "react-hot-toast";
+
 
 
 function AppContent() {
 
   const location = useLocation();
 
-
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/signup";
 
+    const hideFooter =
+  location.pathname === "/login" ||
+  location.pathname === "/signup";
+
 
   return (
-
     <>
 
-      {
-        !hideNavbar && <Navbar />
-      }
-
+      {!hideNavbar && <Navbar />}
 
       <Routes>
-
 
         {/* PUBLIC ROUTES */}
 
@@ -53,12 +57,20 @@ function AppContent() {
           element={<Home />}
         />
 
+        <Route
+          path="/about"
+          element={<AboutUs />}
+        />
+
+        <Route
+          path="/contact"
+          element={<ContactUs />}
+        />
 
         <Route
           path="/signup"
           element={<SignupForm />}
         />
-
 
         <Route
           path="/login"
@@ -66,10 +78,7 @@ function AppContent() {
         />
 
 
-
-
-        {/* PROTECTED ROUTES */}
-
+        {/* USER ROUTES */}
 
         <Route
           path="/dashboard"
@@ -79,8 +88,6 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-
-
 
         <Route
           path="/profile"
@@ -92,23 +99,7 @@ function AppContent() {
         />
 
 
-
-
-        {/* ADD MESS */}
-
-        <Route
-          path="/add-mess"
-          element={
-            <ProtectedRoute>
-              <AddMessForm />
-            </ProtectedRoute>
-          }
-        />
-
-
-
-
-        {/* ALL MESSES */}
+        {/* MESS ROUTES */}
 
         <Route
           path="/messes"
@@ -119,18 +110,46 @@ function AppContent() {
           }
         />
 
+        <Route
+          path="/mess/:id"
+          element={
+            <ProtectedRoute>
+              <MessDetails />
+            </ProtectedRoute>
+          }
+        />
 
 
+        {/* OWNER ROUTES */}
 
-        {/* FALLBACK */}
+        <Route
+          path="/add-mess"
+          element={
+            <ProtectedRoute>
+              <AddMessForm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/owner-dashboard"
+          element={
+            <ProtectedRoute>
+              <OwnerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* 404 */}
 
         <Route
           path="*"
           element={
             <div
               style={{
-                textAlign:"center",
-                marginTop:"100px"
+                textAlign: "center",
+                marginTop: "100px"
               }}
             >
               <h1>
@@ -140,34 +159,26 @@ function AppContent() {
               <p>
                 Page not found
               </p>
-
             </div>
           }
         />
 
-
       </Routes>
+      {!hideFooter && <Footer />}
 
-
-      {/* Toast Container */}
       <Toaster
         position="top-right"
         reverseOrder={false}
       />
 
-
     </>
-
   );
-
 }
 
 
+function App() {
 
-function App(){
-
-  return(
-
+  return (
     <AuthProvider>
 
       <Router>
@@ -177,7 +188,6 @@ function App(){
       </Router>
 
     </AuthProvider>
-
   );
 
 }

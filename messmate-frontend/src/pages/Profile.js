@@ -1,93 +1,223 @@
-import React, { useEffect, useState } from "react";
+import React,{useEffect,useState} from "react";
 import axios from "../axiosConfig";
+import toast from "react-hot-toast";
+import "../styles/Profile.css";
 
 
-const Profile = () => {
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+const Profile=()=>{
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axios.get("/api/auth/profile");
-        setProfile(res.data);
-      } catch (err) {
-        console.log("PROFILE ERROR:", err);
-        setError("Unable to load profile. Please login again.");
-      } finally {
-        setLoading(false);
-      }
-    };
+const [profile,setProfile]=useState(null);
+const [loading,setLoading]=useState(true);
 
-    fetchProfile();
-  }, []);
 
-  if (loading) {
-    return (
-      <div className="profile-loading">
-        Loading profile...
-      </div>
-    );
-  }
+useEffect(()=>{
+fetchProfile();
+},[]);
 
-  if (error) {
-    return (
-      <div className="profile-error">
-        {error}
-      </div>
-    );
-  }
 
-  return (
-    <div className="profile-container">
-      <div className="profile-card">
 
-        <div className="profile-avatar">
-          👤
-        </div>
+const fetchProfile=async()=>{
 
-        <h1>My Profile</h1>
+try{
 
-        <p className="profile-subtitle">
-          Manage your MessMate account details
-        </p>
+const res=await axios.get("/api/auth/profile");
 
-        {profile ? (
-          <div className="profile-details">
+setProfile(res.data);
 
-            <div className="profile-item">
-              <span>Username</span>
-              <strong>{profile.username}</strong>
-            </div>
 
-            <div className="profile-item">
-              <span>Email</span>
-              <strong>{profile.email || "Not available"}</strong>
-            </div>
+}catch(error){
 
-            <div className="profile-item">
-              <span>User ID</span>
-              <strong>#{profile.id}</strong>
-            </div>
+console.log("PROFILE ERROR:",error);
 
-            <div className="profile-item">
-              <span>Member Since</span>
-              <strong>MessMate User</strong>
-            </div>
+toast.error("Unable to load profile");
 
-          </div>
-        ) : (
-          <p>No profile data found</p>
-        )}
 
-        <button className="edit-profile-btn">
-          Edit Profile
-        </button>
+}finally{
 
-      </div>
-    </div>
-  );
+setLoading(false);
+
+}
+
 };
+
+
+
+if(loading){
+
+return(
+
+<div className="profile-loader">
+
+<div className="loader-circle"></div>
+
+<p>
+Loading your profile...
+</p>
+
+</div>
+
+);
+
+}
+
+
+
+if(!profile){
+
+return(
+
+<div className="profile-loader">
+
+<h3>
+Profile not found
+</h3>
+
+<p>
+Please login again
+</p>
+
+</div>
+
+);
+
+}
+
+
+
+return(
+
+<div className="profile-page">
+
+
+<div className="profile-cover"></div>
+
+
+
+<div className="profile-card">
+
+
+
+<div className="profile-header">
+
+
+<div className="profile-avatar">
+
+{profile.username?.charAt(0).toUpperCase()}
+
+</div>
+
+
+
+<h1>
+{profile.username}
+</h1>
+
+
+<p>
+Welcome back to MessMate 🍽️
+</p>
+
+
+
+<span className="role-badge">
+
+{profile.role || "User"}
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+<div className="profile-details">
+
+
+<div className="profile-box">
+
+<span>
+Username
+</span>
+
+<h3>
+{profile.username}
+</h3>
+
+</div>
+
+
+
+
+<div className="profile-box">
+
+<span>
+Email Address
+</span>
+
+<h3>
+{profile.email}
+</h3>
+
+</div>
+
+
+
+
+<div className="profile-box">
+
+<span>
+Account Type
+</span>
+
+<h3>
+{profile.role || "User"}
+</h3>
+
+</div>
+
+
+
+
+<div className="profile-box">
+
+<span>
+Member ID
+</span>
+
+<h3>
+#{profile.id}
+</h3>
+
+</div>
+
+
+</div>
+
+
+
+
+<div className="profile-footer">
+
+<p>
+✨ Thank you for being a part of MessMate community
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+);
+
+};
+
 
 export default Profile;

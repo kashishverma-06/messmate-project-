@@ -14,6 +14,7 @@ const createMessTable = require("./models/mess");
 
 const messRoutes = require("./routes/messRoutes");
 const authRoutes = require("./routes/auth");
+const statsRoutes = require("./routes/stats");
 
 const PORT = process.env.PORT || 5000;
 
@@ -60,6 +61,8 @@ app.use(morgan("dev"));
 app.use("/messes", messRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/stats", statsRoutes);
 
 
 // ================= HEALTH CHECK =================

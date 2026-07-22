@@ -1,0 +1,564 @@
+.mess-list-container {
+  min-height: 100vh;
+  background: #f5f0eb;
+  padding: 40px 30px;
+}
+
+
+/* HEADER */
+
+.mess-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+
+.mess-header h2 {
+  color: #4f4037;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+
+.mess-header p {
+  color: #6d5b50;
+  font-size: 15px;
+}
+
+
+
+
+/* FILTER SECTION */
+
+.filter-section {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+
+}
+
+
+
+.search-input,
+.form-select {
+
+  width: 220px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  border: 1px solid #d8cdc4;
+  background: white;
+  outline: none;
+  font-size: 14px;
+  color:#4f4037;
+  transition:0.3s;
+
+}
+
+
+
+.search-input:focus,
+.form-select:focus {
+
+  border-color:#8a7a70;
+
+  box-shadow:
+  0 0 0 3px rgba(138,122,112,0.15);
+
+}
+
+
+
+
+.refresh-btn {
+
+  padding:13px 20px;
+  border:none;
+  border-radius:12px;
+  background:#8a7a70;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+
+}
+
+
+
+.refresh-btn:hover {
+
+  background:#6d5b50;
+  transform:translateY(-2px);
+
+}
+
+
+
+
+
+/* COUNT */
+
+.mess-count {
+
+  text-align:center;
+  color:#4f4037;
+  font-size:16px;
+  margin-bottom:25px;
+
+}
+
+
+
+.mess-count strong {
+
+  color:#8a7a70;
+
+}
+
+
+
+
+
+/* CARD CONTAINER */
+
+.card-container {
+
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(280px,1fr));
+
+  gap:25px;
+
+}
+
+
+
+
+
+/* CARD */
+
+
+.mess-card {
+
+  background:
+  rgba(255,255,255,0.85);
+
+  backdrop-filter:blur(15px);
+
+  border-radius:22px;
+
+  padding:20px;
+
+  box-shadow:
+  0 15px 35px rgba(0,0,0,0.12);
+
+  border:
+  1px solid rgba(255,255,255,0.5);
+
+  transition:0.3s;
+
+}
+
+
+
+.mess-card:hover {
+
+  transform:translateY(-8px);
+
+}
+
+
+
+
+/* IMAGE */
+
+.mess-image {
+
+  width:100%;
+  height:200px;
+  overflow:hidden;
+  border-radius:18px;
+  margin-bottom:18px;
+
+}
+
+
+
+.mess-image img {
+
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:0.4s;
+
+}
+
+
+
+.mess-card:hover 
+.mess-image img {
+
+  transform:scale(1.08);
+
+}
+
+
+
+
+
+/* CONTENT */
+
+
+.mess-view h3 {
+
+  text-align:center;
+
+  color:#4f4037;
+
+  font-size:22px;
+
+  margin-bottom:12px;
+
+}
+
+
+
+.mess-view p {
+
+  color:#6d5b50;
+
+  font-size:15px;
+
+  margin:10px 0;
+
+}
+
+
+
+.price {
+
+  font-size:18px !important;
+
+  font-weight:700;
+
+  color:#8a7a70 !important;
+
+}
+
+
+
+
+/* RATING */
+
+
+.rating {
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  gap:5px;
+
+  margin:15px 0;
+
+  font-size:18px;
+
+}
+
+
+
+.rating span {
+
+  font-size:14px;
+
+  color:#6d5b50;
+
+  margin-left:8px;
+
+}
+
+
+
+
+/* BUTTONS */
+
+
+.btn-group {
+
+  display:flex;
+
+  gap:10px;
+
+  justify-content:center;
+
+  margin-top:20px;
+
+  flex-wrap:wrap;
+
+}
+
+
+
+.btn-group button {
+
+  padding:10px 18px;
+
+  border:none;
+
+  border-radius:10px;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+}
+
+
+
+
+
+.view-btn {
+
+  background:#8a7a70;
+
+  color:white;
+
+}
+
+
+.view-btn:hover {
+
+  background:#6d5b50;
+
+}
+
+
+
+
+.edit-btn {
+
+  background:#e8ddd5;
+
+  color:#4f4037;
+
+}
+
+
+
+.edit-btn:hover {
+
+  background:#d8cdc4;
+
+}
+
+
+
+
+.delete-btn {
+
+  background:#fdeaea;
+
+  color:#c62828;
+
+}
+
+
+
+.delete-btn:hover {
+
+  background:#f8d2d2;
+
+}
+
+
+
+
+
+
+/* EDIT FORM */
+
+
+.mess-edit-form {
+
+ display:flex;
+
+ flex-direction:column;
+
+ gap:15px;
+
+}
+
+
+
+.form-input {
+
+ width:100%;
+
+ padding:13px;
+
+ border-radius:12px;
+
+ border:1px solid #d8cdc4;
+
+ outline:none;
+
+ font-size:14px;
+
+}
+
+
+
+.form-input:focus {
+
+ border-color:#8a7a70;
+
+ box-shadow:
+ 0 0 0 3px rgba(138,122,112,0.15);
+
+}
+
+
+
+
+
+.save-btn {
+
+ background:#8a7a70;
+
+ color:white;
+
+}
+
+
+
+.cancel-btn {
+
+ background:#eee4dd;
+
+ color:#4f4037;
+
+}
+
+
+
+
+/* EMPTY */
+
+
+.empty-box {
+
+ text-align:center;
+
+ padding:50px;
+
+ background:white;
+
+ border-radius:20px;
+
+ color:#6d5b50;
+
+}
+
+
+
+
+
+/* RESPONSIVE */
+
+
+@media(max-width:768px){
+
+
+.mess-list-container{
+
+padding:25px 15px;
+
+}
+
+
+
+.mess-header h2{
+
+font-size:25px;
+
+}
+
+
+
+.search-input,
+.form-select{
+
+width:100%;
+
+}
+
+
+
+.refresh-btn{
+
+width:100%;
+
+}
+
+
+
+.card-container{
+
+grid-template-columns:1fr;
+
+}
+
+
+.mess-card{
+
+padding:18px;
+
+}
+
+
+}
+
+
+
+
+@media(max-width:480px){
+
+
+.mess-header h2{
+
+font-size:22px;
+
+}
+
+
+.mess-image{
+
+height:170px;
+
+}
+
+
+.btn-group button{
+
+width:100%;
+
+}
+
+
+.rating{
+
+font-size:16px;
+
+}
+
+
+}
+

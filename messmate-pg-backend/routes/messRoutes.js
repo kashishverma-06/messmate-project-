@@ -68,7 +68,7 @@ router.get("/:id", async (req, res) => {
 // ================= CREATE MESSS =================
 router.post("/", async (req, res) => {
   try {
-    const { name, location, price } = req.body;
+    const { name, location, price, image_url, rating } = req.body;
 
     if (!name || !location || !price) {
       return res.status(400).json({
@@ -77,8 +77,8 @@ router.post("/", async (req, res) => {
     }
 
     const result = await pool.query(
-      "INSERT INTO messes (name, location, price) VALUES ($1, $2, $3) RETURNING *",
-      [name, location, price]
+      "INSERT INTO messes (name, location, price, image_url, rating) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [name, location, price, image_url || null, rating || 0]
     );
 
     res.status(201).json(result.rows[0]);
@@ -95,14 +95,14 @@ router.post("/", async (req, res) => {
 // ================= UPDATE MESSS =================
 router.put("/:id", async (req, res) => {
   try {
-    const { name, location, price } = req.body;
+    const { name, location, price,image_url, rating } = req.body;
 
     const result = await pool.query(
       `UPDATE messes 
-       SET name = $1, location = $2, price = $3 
+       SET name = $1, location = $2, price = $3, image_url = $4, rating = $5 
        WHERE id = $4 
        RETURNING *`,
-      [name, location, price, req.params.id]
+      [name, location, price, image_url || null, rating || 0, req.params.id]
     );
 
     if (result.rows.length === 0) {

@@ -54,12 +54,16 @@ const LoginForm = () => {
         password: form.password,
       });
 
-      login(res.data.token);
+      login(res.data.token, res.data.role);
 
       toast.success("Login successful 🎉");
 
       setTimeout(() => {
+        if(res.data.role === "owner"){
+          navigate("/owner/dashboard");
+        }else{
         navigate("/dashboard");
+        }
       }, 1000);
 
     } catch (err) {
@@ -81,7 +85,7 @@ const LoginForm = () => {
         <div className="auth-header">
 
           <h1>
-            🍱 Welcome Back to MessMate
+            🏡 Welcome Back to MessMate
           </h1>
 
           <p>
