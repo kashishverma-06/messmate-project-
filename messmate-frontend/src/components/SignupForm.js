@@ -207,18 +207,6 @@ const SignupForm = () => {
 
           <div className="form-group">
 
-  <label>Account Type</label>
-
-  <select
-    name="role"
-    value={form.role}
-    onChange={handleChange}
-  >
-    <option value="">Select Account Type</option>
-    <option value="user">👤 User</option>
-    <option value="owner">🏪 Mess Owner</option>
-  </select>
-
 </div>
 
           <button 

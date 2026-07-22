@@ -1,0 +1,189 @@
+.manage-container{
+max-width:1300px;
+margin:40px auto;
+padding:20px;
+}
+
+.manage-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.manage-header h1{
+font-size:32px;
+color:#5a3e2b;
+margin-bottom:5px;
+}
+
+.manage-header p{
+color:#777;
+font-size:15px;
+}
+
+.add-btn{
+background:#6d4c41;
+color:#fff;
+border:none;
+padding:12px 22px;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:600;
+transition:.3s;
+}
+
+.add-btn:hover{
+background:#4e342e;
+}
+
+.search-box{
+margin-bottom:20px;
+}
+
+.search-box input{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:8px;
+outline:none;
+font-size:15px;
+}
+
+.search-box input:focus{
+border-color:#6d4c41;
+}
+
+.table-wrapper{
+overflow-x:auto;
+background:#fff;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.mess-table{
+width:100%;
+border-collapse:collapse;
+min-width:900px;
+}
+
+.mess-table thead{
+background:#6d4c41;
+color:#fff;
+}
+
+.mess-table th{
+padding:16px;
+text-align:center;
+font-weight:600;
+}
+
+.mess-table td{
+padding:16px;
+text-align:center;
+border-bottom:1px solid #eee;
+}
+
+.mess-table tbody tr:hover{
+background:#faf7f5;
+}
+
+.mess-image{
+width:270px;
+height:180px;
+object-fit:cover;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.12);
+transition:0.3s;
+}
+
+.mess-image:hover{
+transform:scale(1.05);
+}
+
+.action-buttons{
+display:flex;
+justify-content:center;
+gap:10px;
+}
+
+.edit-btn{
+background:#ffb300;
+color:#fff;
+border:none;
+padding:8px 16px;
+border-radius:6px;
+cursor:pointer;
+transition:.3s;
+font-weight:600;
+}
+
+.edit-btn:hover{
+background:#fb8c00;
+}
+
+.delete-btn{
+background:#e53935;
+color:#fff;
+border:none;
+padding:8px 16px;
+border-radius:6px;
+cursor:pointer;
+transition:.3s;
+font-weight:600;
+}
+
+.delete-btn:hover{
+background:#c62828;
+}
+
+.empty-box{
+text-align:center;
+padding:60px 20px;
+background:#fff;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.empty-box h2{
+color:#5a3e2b;
+margin-bottom:10px;
+}
+
+.empty-box p{
+color:#777;
+}
+
+.manage-loading{
+display:flex;
+justify-content:center;
+align-items:center;
+height:60vh;
+font-size:24px;
+font-weight:600;
+color:#6d4c41;
+}
+
+@media(max-width:768px){
+
+.manage-header{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.add-btn{
+width:100%;
+}
+
+.search-box input{
+font-size:14px;
+}
+
+.mess-table{
+min-width:700px;
+}
+
+}

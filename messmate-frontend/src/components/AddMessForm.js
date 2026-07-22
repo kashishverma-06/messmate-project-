@@ -14,7 +14,7 @@ location:"",
 price:"",
 image_url:"",
 rating:"",
-description:"",
+
 });
 
 
@@ -81,15 +81,6 @@ return "Rating should be between 0 and 5";
 
 }
 
-
-if(!formData.description.trim()){
-
-return "Description is required";
-
-}
-
-
-
 return null;
 
 
@@ -141,7 +132,6 @@ image_url:formData.image_url.trim(),
 
 rating:Number(formData.rating || 0),
 
-description:formData.description.trim(),
 
 
 });
@@ -163,7 +153,7 @@ location:"",
 price:"",
 image_url:"",
 rating:"",
-description:"",
+
 
 });
 
@@ -411,47 +401,6 @@ className="form-input"
 
 
 </div>
-
-
-
-
-
-
-
-
-<div className="form-group full-width">
-
-
-<label>
-Description
-</label>
-
-
-
-<textarea
-
-name="description"
-
-placeholder="Write about your mess..."
-
-value={formData.description}
-
-onChange={handleChange}
-
-className="form-textarea"
-
-/>
-
-
-
-</div>
-
-
-
-
-
-
-
 
 <div className="form-preview full-width">
 

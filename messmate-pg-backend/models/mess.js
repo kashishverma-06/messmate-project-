@@ -1,7 +1,9 @@
 const pool = require("../config/db");
 
 const createMessTable = async () => {
+
   try {
+
     console.log("Creating mess table...");
 
     await pool.query(`
@@ -14,14 +16,17 @@ const createMessTable = async () => {
       );
     `);
 
+
     console.log("✅ Mess table ready");
 
+
   } catch(err){
+
     console.error(
       "❌ Mess table error:",
       err.message
     );
-  }
-};
 
-module.exports = createMessTable;
+  }
+
+};

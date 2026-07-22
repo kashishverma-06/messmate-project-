@@ -9,6 +9,7 @@ const app = express();
 const pool = require("./config/db");
 
 // Table creators
+const adminRoutes=require("./routes/adminRoutes");
 const createUserTable = require("./models/User");
 const createMessTable = require("./models/mess");
 
@@ -57,6 +58,7 @@ app.use(morgan("dev"));
 
 
 // ================= ROUTES =================
+app.use("/api/admin",adminRoutes);
 
 app.use("/messes", messRoutes);
 

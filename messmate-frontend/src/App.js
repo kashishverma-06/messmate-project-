@@ -9,12 +9,13 @@ import {
 import { AuthProvider } from "./context/AuthContext";
 
 import Navbar from "./components/Navbar";
+import AdminLogin from "./pages/AdminLogin";
 import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
+
 import Profile from "./pages/Profile";
 
 import AboutUs from "./components/AboutUs";
@@ -26,6 +27,9 @@ import MessDetails from "./components/MessDetails";
 import AddMessForm from "./components/AddMessForm";
 import Footer from "./components/Footer";
 
+import OwnerRoute from "./components/OwnerRoute";
+import ManageMesses from "./components/ManageMesses";
+
 import { Toaster } from "react-hot-toast";
 
 
@@ -36,11 +40,13 @@ function AppContent() {
 
   const hideNavbar =
     location.pathname === "/login" ||
-    location.pathname === "/signup";
+    location.pathname === "/signup" ||
+    location.pathname === "/admin-login";
 
     const hideFooter =
   location.pathname === "/login" ||
-  location.pathname === "/signup";
+  location.pathname === "/signup" ||
+  location.pathname === "/admin-login";
 
 
   return (
@@ -78,16 +84,15 @@ function AppContent() {
         />
 
 
+<Route
+path="/admin-login"
+element={<AdminLogin/>}
+/>
+
+
         {/* USER ROUTES */}
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+       
 
         <Route
           path="/profile"
@@ -121,24 +126,38 @@ function AppContent() {
 
 
         {/* OWNER ROUTES */}
+{/* OWNER ROUTES */}
 
-        <Route
-          path="/add-mess"
-          element={
-            <ProtectedRoute>
-              <AddMessForm />
-            </ProtectedRoute>
-          }
-        />
+<Route
+path="/owner-dashboard"
+element={
+  <OwnerRoute>
+    <OwnerDashboard />
+  </OwnerRoute>
+}
+/>
 
-        <Route
-          path="/owner-dashboard"
-          element={
-            <ProtectedRoute>
-              <OwnerDashboard />
-            </ProtectedRoute>
-          }
-        />
+
+
+<Route
+path="/add-mess"
+element={
+  <OwnerRoute>
+    <AddMessForm />
+  </OwnerRoute>
+}
+/>
+
+
+
+<Route
+path="/manage-messes"
+element={
+  <OwnerRoute>
+    <ManageMesses />
+  </OwnerRoute>
+}
+/>
 
 
         {/* 404 */}

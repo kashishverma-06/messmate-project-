@@ -4,17 +4,15 @@ import axios from "../axiosConfig";
 import toast from "react-hot-toast";
 import "./../styles/OwnerDashboard.css";
 
-
 const OwnerDashboard=()=>{
 
 const navigate=useNavigate();
 
-const [data,setData]=useState({
-  totalMesses:0,
-  totalCustomers:0,
-  averageRating:0,
-  monthlyRevenue:0,
-  messes:[]
+const [dashboard,setDashboard]=useState({
+totalMesses:0,
+totalCustomers:0,
+averageRating:0,
+messes:[]
 });
 
 const [loading,setLoading]=useState(true);
@@ -26,27 +24,24 @@ const fetchDashboard=async()=>{
 
 try{
 
-const res=await axios.get(
-"/api/owner/dashboard"
-);
+const res=await axios.get("/api/owner/dashboard");
+
 
 console.log(
-"OWNER DASHBOARD DATA:",
+"OWNER DATA:",
 res.data
 );
 
 
-setData({
+setDashboard({
 
- totalMesses:res.data.totalMesses || 0,
+totalMesses:res.data.totalMesses || 0,
 
- totalCustomers:res.data.totalCustomers || 0,
+totalCustomers:res.data.totalCustomers || 0,
 
- averageRating:res.data.averageRating || 0,
+averageRating:res.data.averageRating || 0,
 
- monthlyRevenue:res.data.monthlyRevenue || 0,
-
- messes:res.data.messes || []
+messes:res.data.messes || []
 
 });
 
@@ -55,13 +50,12 @@ setData({
 catch(error){
 
 console.log(
-"OWNER DASHBOARD ERROR:",
+"Dashboard Error:",
 error
 );
 
-
 toast.error(
-"Unable to load dashboard"
+"Dashboard load failed"
 );
 
 
@@ -101,11 +95,9 @@ Loading Dashboard...
 
 
 
-
 return(
 
 <div className="owner-dashboard">
-
 
 
 <div className="owner-header">
@@ -117,11 +109,10 @@ Welcome Back, Mess Partner 👋
 </h1>
 
 <p>
-Manage your mess services, customers and listings easily.
+Manage your mess listings easily.
 </p>
 
 </div>
-
 
 
 <button
@@ -153,11 +144,11 @@ Total Messes
 </h3>
 
 <h2>
-{data.totalMesses}
+{dashboard.totalMesses}
 </h2>
 
 <p>
-Active Listings
+Your Active Listings
 </p>
 
 </div>
@@ -172,7 +163,7 @@ Customers
 </h3>
 
 <h2>
-{data.totalCustomers}
+{dashboard.totalCustomers}
 </h2>
 
 <p>
@@ -184,6 +175,7 @@ Registered Users
 
 
 
+
 <div className="owner-card">
 
 <h3>
@@ -191,30 +183,11 @@ Average Rating
 </h3>
 
 <h2>
-⭐ {data.averageRating}
+⭐ {dashboard.averageRating}
 </h2>
 
 <p>
 Customer Reviews
-</p>
-
-</div>
-
-
-
-
-<div className="owner-card">
-
-<h3>
-Revenue
-</h3>
-
-<h2>
-₹{data.monthlyRevenue}
-</h2>
-
-<p>
-Estimated Earnings
 </p>
 
 </div>
@@ -231,18 +204,33 @@ Estimated Earnings
 <section className="owner-messes">
 
 
+<div className="section-header">
+
 <h2>
 Your Mess Listings
 </h2>
 
 
+<button
 
-<div className="owner-mess-grid">
+onClick={()=>navigate("/add-mess")}
+
+>
+
+Manage Mess
+
+</button>
+
+
+</div>
+
+
+
 
 
 {
 
-data.messes.length===0 ?
+dashboard.messes.length===0 ?
 
 
 (
@@ -257,6 +245,7 @@ data.messes.length===0 ?
 Add your first mess listing.
 </p>
 
+
 </div>
 
 )
@@ -265,71 +254,114 @@ Add your first mess listing.
 :
 
 
-data.messes.map((mess)=>(
+(
+
+<div className="table-container">
+
+<table className="owner-table">
 
 
-<div
+<thead>
 
-className="owner-mess-card"
+<tr>
 
-key={mess.id}
+<th>
+Image
+</th>
 
->
+<th>
+Name
+</th>
 
+<th>
+Location
+</th>
+
+<th>
+Price
+</th>
+
+<th>
+Rating
+</th>
+
+<th>
+Action
+</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+{
+
+dashboard.messes.map((mess)=>(
+
+
+<tr key={mess.id}>
+
+
+<td>
 
 <img
 
 src={
 mess.image_url ||
-"https://via.placeholder.com/400x250?text=Mess+Image"
+"https://via.placeholder.com/100"
 }
 
 alt={mess.name}
 
 />
 
+</td>
 
 
-<h3>
+
+<td>
 {mess.name}
-</h3>
+</td>
 
 
-
-<p>
+<td>
 📍 {mess.location}
-</p>
+</td>
 
 
-
-<p>
-💰 ₹{mess.price}/month
-</p>
-
+<td>
+₹{mess.price}/month
+</td>
 
 
-<p>
+<td>
 ⭐ {mess.rating || 0}
-</p>
+</td>
 
 
+
+<td>
 
 
 <button
 
-onClick={()=>
-navigate(`/mess/${mess.id}`)
-}
+onClick={()=>navigate(`/mess/${mess.id}`)}
 
 >
 
-View Details
+View
 
 </button>
 
 
+</td>
 
-</div>
+
+</tr>
 
 
 ))
@@ -338,79 +370,23 @@ View Details
 }
 
 
+</tbody>
+
+
+</table>
+
+
 </div>
+
+
+)
+
+
+}
+
 
 
 </section>
-
-
-
-
-
-
-
-<div className="owner-actions">
-
-
-
-<div className="action-box">
-
-
-<h2>
-Manage Mess
-</h2>
-
-
-<p>
-Update images, pricing and details.
-</p>
-
-
-<button
-
-onClick={()=>
-navigate("/messes")
-}
-
->
-
-Manage
-
-</button>
-
-
-</div>
-
-
-
-
-
-<div className="action-box">
-
-
-<h2>
-Add Menu
-</h2>
-
-
-<p>
-Food menu management coming soon.
-</p>
-
-
-<button disabled>
-
-Coming Soon
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
 
 
 
@@ -419,6 +395,7 @@ Coming Soon
 
 
 );
+
 
 };
 
