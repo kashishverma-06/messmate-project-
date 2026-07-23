@@ -160,6 +160,17 @@ return(
 
 <div className="manage-container">
 
+<button
+
+className="back-btn"
+
+onClick={()=>navigate("/owner-dashboard")}
+
+>
+
+← Back Dashboard
+
+</button>
 <div className="manage-header">
 
 <div>

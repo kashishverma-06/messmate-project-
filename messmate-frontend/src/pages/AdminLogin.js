@@ -7,14 +7,18 @@ import "../styles/AdminLogin.css";
 
 const AdminLogin=()=>{
 
+
 const navigate=useNavigate();
+
 
 const [formData,setFormData]=useState({
 email:"",
 password:""
 });
 
+
 const [loading,setLoading]=useState(false);
+
 
 
 const handleChange=(e)=>{
@@ -28,22 +32,29 @@ setFormData({
 
 
 
+
+
 const handleSubmit=async(e)=>{
 
 e.preventDefault();
 
+
 try{
+
 
 setLoading(true);
 
 
-const response = await axios.post(
+
+const response=await axios.post(
 "/api/admin/login",
 {
-  email: formData.email.trim(),
-  password: formData.password,
+email:formData.email.trim(),
+password:formData.password
 }
 );
+
+
 
 
 localStorage.setItem(
@@ -52,33 +63,69 @@ response.data.token
 );
 
 
+
 localStorage.setItem(
 "user",
 JSON.stringify(response.data.admin)
 );
 
 
-toast.success(
-"Admin login successful "
+
+localStorage.setItem(
+"role",
+response.data.admin.role
 );
+
+
+
+
+toast.success(
+"Admin login successful"
+);
+
+// clear form data after submit
+setFormData({
+email:"",
+password:""
+});
 
 
 navigate("/owner-dashboard");
 
 
-}catch(error){
 
-toast.error(
-error.response?.data?.message || "Login failed"
+}
+catch(error){
+
+
+console.log(
+"Admin Login Error:",
+error.response?.data || error.message
 );
 
-}finally{
+
+
+toast.error(
+error.response?.data?.message ||
+"Login failed"
+);
+
+
+
+}
+finally{
+
 
 setLoading(false);
 
+
 }
 
+
 };
+
+
+
 
 
 
@@ -91,7 +138,7 @@ return(
 
 
 <h1>
- Admin Login
+Admin Login
 </h1>
 
 
@@ -101,63 +148,98 @@ Login to manage MessMate platform
 
 
 
+
 <form onSubmit={handleSubmit}>
 
 
 <div className="admin-input-group">
 
+
 <label>
 Email
 </label>
 
+
 <input
+
 type="email"
+
 name="email"
+
 placeholder="Enter admin email"
+
 value={formData.email}
+
 onChange={handleChange}
+
 required
+
 />
 
+
 </div>
+
+
+
 
 
 
 <div className="admin-input-group">
 
+
 <label>
 Password
 </label>
 
+
+
 <input
+
 type="password"
+
 name="password"
+
 placeholder="Enter password"
+
 value={formData.password}
+
 onChange={handleChange}
+
 required
+
 />
+
 
 </div>
 
 
 
 
+
+
 <button
+
 type="submit"
+
 disabled={loading}
+
 className="admin-login-btn"
+
 >
 
 {
+
 loading
 ?
 "Logging in..."
 :
 "Login"
+
 }
 
 </button>
+
+
 
 
 </form>
@@ -168,9 +250,12 @@ loading
 
 </div>
 
+
 );
 
+
 };
+
 
 
 export default AdminLogin;

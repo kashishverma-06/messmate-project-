@@ -2,64 +2,96 @@ import React,{useEffect,useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "../axiosConfig";
 import toast from "react-hot-toast";
-import "./../styles/OwnerDashboard.css";
+import "../styles/OwnerDashboard.css";
+
 
 const OwnerDashboard=()=>{
 
+
 const navigate=useNavigate();
 
+
 const [dashboard,setDashboard]=useState({
+
 totalMesses:0,
 totalCustomers:0,
 averageRating:0,
 messes:[]
+
 });
+
 
 const [loading,setLoading]=useState(true);
 
 
+
 useEffect(()=>{
+
+fetchDashboard();
+
+},[]);
+
+
+
+
 
 const fetchDashboard=async()=>{
 
+
 try{
 
-const res=await axios.get("/api/owner/dashboard");
+
+const res=await axios.get(
+"/api/owner/dashboard",
+);
+
 
 
 console.log(
-"OWNER DATA:",
+"Dashboard Data:",
 res.data
 );
 
 
+
 setDashboard({
 
-totalMesses:res.data.totalMesses || 0,
+totalMesses:
+res.data.totalMesses || 0,
 
-totalCustomers:res.data.totalCustomers || 0,
 
-averageRating:res.data.averageRating || 0,
+totalCustomers:
+res.data.totalCustomers || 0,
 
-messes:res.data.messes || []
+
+averageRating:
+res.data.averageRating || 0,
+
+
+messes:
+res.data.messes || []
 
 });
 
 
 }
+
 catch(error){
+
 
 console.log(
 "Dashboard Error:",
-error
+error.response?.data || error.message
 );
 
+
 toast.error(
-"Dashboard load failed"
+"Unable to load dashboard"
 );
 
 
 }
+
 finally{
 
 setLoading(false);
@@ -70,10 +102,7 @@ setLoading(false);
 };
 
 
-fetchDashboard();
 
-
-},[]);
 
 
 
@@ -95,24 +124,34 @@ Loading Dashboard...
 
 
 
+
+
+
 return(
 
 <div className="owner-dashboard">
 
 
+
+{/* HEADER */}
+
 <div className="owner-header">
 
-<div>
+
+<div className="welcome-section">
 
 <h1>
-Welcome Back, Mess Partner 👋
+Welcome Admin 👋
 </h1>
 
+
 <p>
-Manage your mess listings easily.
+Manage your MessMate business from one place.
 </p>
 
+
 </div>
+
 
 
 <button
@@ -128,47 +167,68 @@ onClick={()=>navigate("/add-mess")}
 </button>
 
 
+
 </div>
 
 
 
+
+
+{/* STAT CARDS */}
 
 
 <div className="owner-stats">
 
 
+
 <div className="owner-card">
+
+<div className="card-icon">
+🍱
+</div>
 
 <h3>
 Total Messes
 </h3>
 
+
 <h2>
 {dashboard.totalMesses}
 </h2>
 
+
 <p>
-Your Active Listings
+Active Listings
 </p>
+
 
 </div>
 
 
 
 
+
 <div className="owner-card">
 
+<div className="card-icon">
+👥
+</div>
+
+
 <h3>
-Customers
+Total Customers
 </h3>
+
 
 <h2>
 {dashboard.totalCustomers}
 </h2>
 
+
 <p>
 Registered Users
 </p>
+
 
 </div>
 
@@ -178,42 +238,72 @@ Registered Users
 
 <div className="owner-card">
 
+
+<div className="card-icon">
+⭐
+</div>
+
+
 <h3>
 Average Rating
 </h3>
 
+
 <h2>
-⭐ {dashboard.averageRating}
+{dashboard.averageRating}
 </h2>
+
 
 <p>
 Customer Reviews
 </p>
 
-</div>
-
 
 </div>
 
 
 
 
+</div>
+
+
+
+
+
+
+
+
+{/* MESSES SECTION */}
 
 
 
 <section className="owner-messes">
 
 
+
 <div className="section-header">
 
+
+<div>
+
 <h2>
-Your Mess Listings
+Mess Listings
 </h2>
+
+
+<p>
+Manage all available mess services
+</p>
+
+</div>
+
+
+
 
 
 <button
 
-onClick={()=>navigate("/add-mess")}
+onClick={()=>navigate("/manage-messes")}
 
 >
 
@@ -222,7 +312,10 @@ Manage Mess
 </button>
 
 
+
 </div>
+
+
 
 
 
@@ -233,30 +326,45 @@ Manage Mess
 dashboard.messes.length===0 ?
 
 
-(
 
 <div className="empty-owner">
 
+
 <h3>
-🍱 No Mess Added
+🍱 No Mess Found
 </h3>
 
+
 <p>
-Add your first mess listing.
+Currently no mess listing available.
+Add your first mess.
 </p>
+
+
+
+<button
+
+onClick={()=>navigate("/add-mess")}
+
+>
+
+Add Mess
+
+</button>
+
 
 
 </div>
 
-)
 
 
 :
 
 
-(
 
 <div className="table-container">
+
+
 
 <table className="owner-table">
 
@@ -269,29 +377,36 @@ Add your first mess listing.
 Image
 </th>
 
+
 <th>
 Name
 </th>
+
 
 <th>
 Location
 </th>
 
+
 <th>
 Price
 </th>
+
 
 <th>
 Rating
 </th>
 
+
 <th>
 Action
 </th>
 
+
 </tr>
 
 </thead>
+
 
 
 
@@ -308,6 +423,7 @@ dashboard.messes.map((mess)=>(
 
 <td>
 
+
 <img
 
 src={
@@ -319,28 +435,51 @@ alt={mess.name}
 
 />
 
+
 </td>
 
 
 
 <td>
+
+<strong>
 {mess.name}
+</strong>
+
 </td>
 
 
+
+
 <td>
+
 📍 {mess.location}
+
 </td>
 
 
+
+
 <td>
-₹{mess.price}/month
+
+₹{mess.price}
+
 </td>
 
 
+
+
 <td>
+
+<span className="rating">
+
 ⭐ {mess.rating || 0}
+
+</span>
+
+
 </td>
+
 
 
 
@@ -348,6 +487,8 @@ alt={mess.name}
 
 
 <button
+
+className="view-btn"
 
 onClick={()=>navigate(`/mess/${mess.id}`)}
 
@@ -361,6 +502,7 @@ View
 </td>
 
 
+
 </tr>
 
 
@@ -370,16 +512,16 @@ View
 }
 
 
+
 </tbody>
 
 
 </table>
 
 
+
 </div>
 
-
-)
 
 
 }
@@ -387,6 +529,9 @@ View
 
 
 </section>
+
+
+
 
 
 

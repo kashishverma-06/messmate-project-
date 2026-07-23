@@ -1,9 +1,11 @@
 import React,{useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "../axiosConfig";
 import toast from "react-hot-toast";
 import "../styles/AddMessForm.css";
 
 function AddMessForm({onMessAdded}){
+    const navigate = useNavigate();
 
 const [loading,setLoading]=useState(false);
 
@@ -204,7 +206,19 @@ return(
 
 <div className="mess-form-container">
 
+<button
 
+type="button"
+
+className="back-btn"
+
+onClick={()=>navigate("/owner-dashboard")}
+
+>
+
+← Back Dashboard
+
+</button>
 <div className="mess-form-card">
 
 

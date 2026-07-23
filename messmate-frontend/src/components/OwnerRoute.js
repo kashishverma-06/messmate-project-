@@ -1,20 +1,39 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
-function OwnerRoute({ children }) {
 
-const user = JSON.parse(localStorage.getItem("user"));
+function OwnerRoute({children}){
 
-if(!user){
-    return <Navigate to="/login" />;
+
+const user = JSON.parse(
+localStorage.getItem("user")
+);
+
+
+const token = localStorage.getItem("token");
+
+
+
+if(!token || !user){
+
+return <Navigate to="/admin-login"/>
+
 }
 
-if(user.role !== "owner"){
-    return <Navigate to="/" />;
+
+
+if(user.role !== "admin"){
+
+return <Navigate to="/"/>
+
 }
+
+
 
 return children;
 
+
 }
+
 
 export default OwnerRoute;

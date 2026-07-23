@@ -12,7 +12,7 @@ const SignupForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "",
+  
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -38,9 +38,7 @@ const SignupForm = () => {
     if (!form.email.trim()) {
       return "Email is required";
     }
-    if (!form.role) {
-  return "Please select account type";
-}
+   
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -72,11 +70,11 @@ const SignupForm = () => {
     try {
       setLoading(true);
 
-      await axios.post("/api/auth/register", {
+      await axios.post("/auth/register", {
         username: form.username.trim(),
         email: form.email.trim(),
         password: form.password,
-          role: form.role,
+         
       });
 
       toast.success("Account created successfully 🎉");
@@ -86,7 +84,7 @@ const SignupForm = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        role:"",
+       
       });
 
       setTimeout(() => {

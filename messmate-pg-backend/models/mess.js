@@ -30,3 +30,4 @@ const createMessTable = async () => {
   }
 
 };
+module.exports=createMessTable;

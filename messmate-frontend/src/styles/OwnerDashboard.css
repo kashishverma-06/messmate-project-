@@ -1,189 +1,320 @@
 .owner-dashboard{
-  min-height:100vh;
-  background:#f5f0eb;
-  padding:40px 6%;
+padding:40px;
+background:#f7f2ed;
+min-height:100vh;
 }
 
 
+/* HEADER */
+
 .owner-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+width:100%;
+}
+
+
+.owner-header div:first-child{
+flex:1;
 }
 
 
 .owner-header h1{
-  color:#6d5b50;
-  font-size:32px;
+font-size:32px;
+color:#3b2f2f;
+margin:0;
 }
 
 
 .owner-header p{
-  color:#777;
-  margin-top:10px;
+color:#7a6b63;
 }
 
 
+
+/* ADD BUTTON */
+
 .add-mess-btn{
-  background:#8a7a70;
-  color:white;
-  border:none;
-  padding:14px 25px;
-  border-radius:30px;
-  cursor:pointer;
-  font-weight:600;
+
+margin-left:auto;
+
+background:#8a7a70;
+
+color:white;
+
+border:none;
+
+padding:14px 25px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-size:16px;
+
+font-weight:600;
+
+transition:.3s ease;
+
+box-shadow:
+0 8px 18px rgba(138,122,112,.25);
+
+white-space:nowrap;
+
 }
 
 
 .add-mess-btn:hover{
-  background:#6d5b50;
+
+background:#6f625a;
+
+transform:translateY(-3px);
+
 }
 
 
 
+/* STATS */
+
 .owner-stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:25px;
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:25px;
+
+margin:30px 0;
+
 }
 
 
 
 .owner-card{
-  background:white;
-  padding:25px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
 
+background:white;
 
-.owner-card h3{
-  color:#777;
-  font-size:15px;
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.08);
+
 }
 
 
 .owner-card h2{
-  color:#8a7a70;
-  margin:15px 0;
-  font-size:30px;
-}
 
+font-size:38px;
 
-.owner-card p{
-  color:#999;
-}
+color:#8a7a70;
 
+margin:10px 0;
 
-
-
-.owner-actions{
-  margin-top:40px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:25px;
 }
 
 
 
-.action-box{
-  background:white;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
+/* MESSES SECTION */
 
+.owner-messes{
 
-.action-box h2{
-  color:#6d5b50;
-}
+background:white;
 
+padding:30px;
 
-.action-box p{
-  color:#777;
-  margin:15px 0;
-}
+border-radius:20px;
 
-
-.action-box button{
-  background:#8a7a70;
-  color:white;
-  border:none;
-  padding:12px 25px;
-  border-radius:25px;
-  cursor:pointer;
 }
 
 
 
-.recent-section{
-  margin-top:40px;
+.section-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:25px;
+
 }
 
 
-.recent-section h2{
-  color:#6d5b50;
+
+/* ALL BUTTONS */
+
+.section-header button,
+.empty-owner button,
+.owner-table button{
+
+
+background:#8a7a70;
+
+color:white;
+
+border:none;
+
+padding:12px 22px;
+
+border-radius:12px;
+
+font-size:15px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s ease;
+
+
 }
 
+
+.section-header button:hover,
+.empty-owner button:hover,
+.owner-table button:hover{
+
+
+background:#6f625a;
+
+transform:translateY(-2px);
+
+}
+
+
+
+/* MANAGE BUTTON */
+
+.section-header button{
+
+background:#d8cdc4;
+
+color:#3b2f2f;
+
+}
+
+
+.section-header button:hover{
+
+background:#c7b9ae;
+
+}
+
+
+
+/* TABLE */
+
+.owner-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+
+
+.owner-table th{
+
+background:#f5f0eb;
+
+padding:15px;
+
+text-align:left;
+
+}
+
+
+
+.owner-table td{
+
+padding:15px;
+
+border-bottom:1px solid #eee;
+
+}
+
+
+
+.owner-table img{
+
+width:70px;
+
+height:70px;
+
+border-radius:12px;
+
+object-fit:cover;
+
+}
+
+
+
+/* EMPTY */
 
 .empty-owner{
-  margin-top:20px;
-  background:white;
-  padding:40px;
-  border-radius:20px;
-  text-align:center;
+
+text-align:center;
+
+padding:40px;
+
 }
 
 
-.empty-owner span{
-  font-size:45px;
+.empty-owner button{
+
+margin-top:15px;
+
 }
 
 
-.empty-owner h3{
-  color:#6d5b50;
-}
 
+/* RESPONSIVE */
 
+@media(max-width:768px){
 
-@media(max-width:900px){
 
 .owner-header{
-  flex-direction:column;
-  gap:20px;
-  align-items:flex-start;
+
+flex-direction:column;
+
+align-items:stretch;
+
+}
+
+
+.add-mess-btn{
+
+width:100%;
+
+margin-left:0;
+
 }
 
 
 .owner-stats{
- grid-template-columns:repeat(2,1fr);
-}
 
-
-.owner-actions{
- grid-template-columns:1fr;
-}
-
+grid-template-columns:1fr;
 
 }
 
 
+.section-header{
 
-@media(max-width:600px){
+flex-direction:column;
 
-.owner-dashboard{
- padding:25px 5%;
-}
+gap:15px;
 
+align-items:stretch;
 
-.owner-stats{
- grid-template-columns:1fr;
-}
-
-
-.owner-header h1{
- font-size:24px;
 }
 
 

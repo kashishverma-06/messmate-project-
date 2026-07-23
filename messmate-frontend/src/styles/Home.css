@@ -589,76 +589,6 @@ font-weight:600;
 
 }
 
-
-
-
-
-
-.mess-image{
-
-width:100%;
-height:220px;
-
-overflow:hidden;
-
-border-radius:20px;
-
-}
-
-
-
-.mess-image img{
-
-width:100%;
-height:100%;
-
-object-fit:cover;
-
-transition:.4s;
-
-}
-
-
-
-.mess-card:hover 
-.mess-image img{
-
-transform:scale(1.08);
-
-}
-
-
-
-
-
-
-.mess-card{
-
-background:white;
-
-padding:20px;
-
-border-radius:25px;
-
-box-shadow:
-0 15px 35px rgba(0,0,0,.08);
-
-transition:.3s;
-
-}
-
-
-
-.mess-card:hover{
-
-transform:translateY(-8px);
-
-}
-
-
-
-
-
 @media(max-width:900px){
 
 
@@ -685,3 +615,20 @@ height:300px;
 
 
 }
+@media(max-width:900px){
+
+.mess-image{
+  height:220px;
+}
+
+}
+
+
+@media(max-width:500px){
+
+.mess-image{
+  height:200px;
+}
+
+}
+

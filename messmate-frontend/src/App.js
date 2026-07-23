@@ -9,131 +9,158 @@ import {
 import { AuthProvider } from "./context/AuthContext";
 
 import Navbar from "./components/Navbar";
-import AdminLogin from "./pages/AdminLogin";
-import SignupForm from "./components/SignupForm";
-import LoginForm from "./components/LoginForm";
-import ProtectedRoute from "./components/ProtectedRoute";
-
-import Home from "./pages/Home";
-
-import Profile from "./pages/Profile";
-
-import AboutUs from "./components/AboutUs";
-import ContactUs from "./components/ContactUs";
-import OwnerDashboard from "./components/OwnerDashboard";
-
-import MessList from "./components/MessList";
-import MessDetails from "./components/MessDetails";
-import AddMessForm from "./components/AddMessForm";
 import Footer from "./components/Footer";
 
-import OwnerRoute from "./components/OwnerRoute";
+import Home from "./pages/Home";
+import AboutUs from "./components/AboutUs";
+import ContactUs from "./components/ContactUs";
+
+import SignupForm from "./components/SignupForm";
+import LoginForm from "./components/LoginForm";
+import AdminLogin from "./pages/AdminLogin";
+
+import Profile from "./pages/Profile";
+import MessList from "./components/MessList";
+import MessDetails from "./components/MessDetails";
+
+import OwnerDashboard from "./components/OwnerDashboard";
+import AddMessForm from "./components/AddMessForm";
 import ManageMesses from "./components/ManageMesses";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import OwnerRoute from "./components/OwnerRoute";
+
+import EditMess from "./components/EditMess";
 
 import { Toaster } from "react-hot-toast";
 
 
 
-function AppContent() {
+function AppContent(){
 
-  const location = useLocation();
-
-  const hideNavbar =
-    location.pathname === "/login" ||
-    location.pathname === "/signup" ||
-    location.pathname === "/admin-login";
-
-    const hideFooter =
-  location.pathname === "/login" ||
-  location.pathname === "/signup" ||
-  location.pathname === "/admin-login";
+const location = useLocation();
 
 
-  return (
-    <>
+const hideNavbar =
+location.pathname === "/login" ||
+location.pathname === "/signup" ||
+location.pathname === "/admin-login";
 
-      {!hideNavbar && <Navbar />}
 
-      <Routes>
+const hideFooter =
+location.pathname === "/login" ||
+location.pathname === "/signup" ||
+location.pathname === "/admin-login";
 
-        {/* PUBLIC ROUTES */}
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
 
-        <Route
-          path="/about"
-          element={<AboutUs />}
-        />
+return(
 
-        <Route
-          path="/contact"
-          element={<ContactUs />}
-        />
+<>
 
-        <Route
-          path="/signup"
-          element={<SignupForm />}
-        />
 
-        <Route
-          path="/login"
-          element={<LoginForm />}
-        />
+{!hideNavbar && <Navbar />}
+
+
+
+<Routes>
+
+
+{/* ================= PUBLIC ================= */}
+
+
+<Route
+path="/"
+element={<Home />}
+/>
+
+
+
+<Route
+path="/about"
+element={<AboutUs />}
+/>
+
+
+
+<Route
+path="/contact"
+element={<ContactUs />}
+/>
+
+
+
+<Route
+path="/signup"
+element={<SignupForm />}
+/>
+
+
+
+<Route
+path="/login"
+element={<LoginForm />}
+/>
+
 
 
 <Route
 path="/admin-login"
-element={<AdminLogin/>}
+element={<AdminLogin />}
 />
 
 
-        {/* USER ROUTES */}
-
-       
-
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
 
 
-        {/* MESS ROUTES */}
-
-        <Route
-          path="/messes"
-          element={
-            <ProtectedRoute>
-              <MessList />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/mess/:id"
-          element={
-            <ProtectedRoute>
-              <MessDetails />
-            </ProtectedRoute>
-          }
-        />
+{/* ================= USER ================= */}
 
 
-        {/* OWNER ROUTES */}
-{/* OWNER ROUTES */}
+
+<Route
+path="/profile"
+element={
+<ProtectedRoute>
+<Profile />
+</ProtectedRoute>
+}
+/>
+
+
+
+<Route
+path="/messes"
+element={
+<ProtectedRoute>
+<MessList />
+</ProtectedRoute>
+}
+/>
+
+
+
+<Route
+path="/mess/:id"
+element={
+<ProtectedRoute>
+<MessDetails />
+</ProtectedRoute>
+}
+/>
+
+
+
+
+
+{/* ================= OWNER ================= */}
+
+
 
 <Route
 path="/owner-dashboard"
 element={
-  <OwnerRoute>
-    <OwnerDashboard />
-  </OwnerRoute>
+<OwnerRoute>
+<OwnerDashboard />
+</OwnerRoute>
 }
 />
 
@@ -142,9 +169,9 @@ element={
 <Route
 path="/add-mess"
 element={
-  <OwnerRoute>
-    <AddMessForm />
-  </OwnerRoute>
+<OwnerRoute>
+<AddMessForm />
+</OwnerRoute>
 }
 />
 
@@ -153,63 +180,99 @@ element={
 <Route
 path="/manage-messes"
 element={
-  <OwnerRoute>
-    <ManageMesses />
-  </OwnerRoute>
+<OwnerRoute>
+<ManageMesses />
+</OwnerRoute>
+}
+/>
+<Route
+path="/edit-mess/:id"
+element={
+<OwnerRoute>
+<EditMess />
+</OwnerRoute>
 }
 />
 
 
-        {/* 404 */}
 
-        <Route
-          path="*"
-          element={
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "100px"
-              }}
-            >
-              <h1>
-                404
-              </h1>
 
-              <p>
-                Page not found
-              </p>
-            </div>
-          }
-        />
 
-      </Routes>
-      {!hideFooter && <Footer />}
+{/* ================= 404 ================= */}
 
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-      />
 
-    </>
-  );
+
+<Route
+path="*"
+element={
+
+<div
+style={{
+textAlign:"center",
+marginTop:"100px"
+}}
+>
+
+<h1>
+404
+</h1>
+
+
+<p>
+Page not found
+</p>
+
+
+</div>
+
+}
+/>
+
+
+
+</Routes>
+
+
+
+{!hideFooter && <Footer />}
+
+
+
+<Toaster
+position="top-right"
+reverseOrder={false}
+/>
+
+
+
+</>
+
+)
+
 }
 
 
-function App() {
 
-  return (
-    <AuthProvider>
 
-      <Router>
+function App(){
 
-        <AppContent />
 
-      </Router>
+return(
 
-    </AuthProvider>
-  );
+<AuthProvider>
+
+<Router>
+
+<AppContent />
+
+</Router>
+
+</AuthProvider>
+
+)
 
 }
+
 
 
 export default App;
