@@ -8,6 +8,8 @@ padding:40px 20px;
 
 display:flex;
 
+flex-direction:column;
+
 justify-content:center;
 
 align-items:center;
@@ -38,6 +40,8 @@ box-shadow:
 
 
 .back-btn{
+
+align-self:flex-start;
 
 border:none;
 
@@ -171,14 +175,11 @@ color:#6d5b50;
 
 
 
-
 .info-box{
 
 display:grid;
 
-grid-template-columns:
-
-repeat(3,1fr);
+grid-template-columns:repeat(3,1fr);
 
 gap:20px;
 
@@ -217,7 +218,6 @@ color:#6d5b50;
 font-size:14px;
 
 }
-
 
 
 
@@ -275,21 +275,95 @@ color:#6d5b50;
 
 
 
+/* ================= TABLET ================= */
 
-@media(max-width:768px){
+@media(max-width:900px){
+
+
+.mess-details-page{
+
+padding:30px 15px;
+
+}
 
 
 .details-card{
 
-padding:20px;
+padding:25px;
+
+}
+
+
+.details-image{
+
+height:330px;
+
+}
+
+
+.details-content h1{
+
+font-size:30px;
+
+}
+
+
+.info-box{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
 
 }
 
 
 
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+
+.mess-details-page{
+
+padding:20px 12px;
+
+align-items:stretch;
+
+}
+
+
+.details-card{
+
+padding:18px;
+
+border-radius:18px;
+
+}
+
+
+.back-btn{
+
+padding:9px 15px;
+
+font-size:14px;
+
+}
+
+
 .details-image{
 
-height:250px;
+height:220px;
+
+border-radius:15px;
+
+}
+
+
+
+.details-content{
+
+padding:20px 5px;
 
 }
 
@@ -297,7 +371,41 @@ height:250px;
 
 .details-content h1{
 
-font-size:26px;
+font-size:24px;
+
+}
+
+
+
+.location{
+
+font-size:15px;
+
+}
+
+
+
+.price-details{
+
+font-size:23px;
+
+}
+
+
+
+.details-rating{
+
+font-size:20px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.details-rating span{
+
+font-size:14px;
 
 }
 
@@ -306,6 +414,28 @@ font-size:26px;
 .info-box{
 
 grid-template-columns:1fr;
+
+gap:15px;
+
+margin:20px 0;
+
+}
+
+
+
+.info-box div{
+
+padding:15px;
+
+}
+
+
+
+.book-btn{
+
+font-size:15px;
+
+padding:13px;
 
 }
 

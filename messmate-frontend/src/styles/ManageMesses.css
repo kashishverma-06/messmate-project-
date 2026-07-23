@@ -91,18 +91,7 @@ border-bottom:1px solid #eee;
 background:#faf7f5;
 }
 
-/* .mess-image{
-width:270px;
-height:180px;
-object-fit:cover;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.12);
-transition:0.3s;
-}
 
-.mess-image:hover{
-transform:scale(1.05);
-} */
 
 .action-buttons{
 display:flex;
@@ -295,5 +284,190 @@ padding:30px;
 border-radius:20px;
 
 box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+/* ================= TABLE RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+
+.manage-container{
+padding:20px 15px;
+}
+
+
+.manage-header{
+
+margin-top:70px;
+
+padding:20px;
+
+border-radius:15px;
+
+}
+
+
+.manage-header h1{
+
+font-size:24px;
+
+}
+
+
+.table-wrapper{
+
+background:transparent;
+
+box-shadow:none;
+
+overflow:visible;
+
+}
+
+
+.mess-table{
+
+min-width:100%;
+
+border-collapse:separate;
+
+border-spacing:0 15px;
+
+}
+
+
+.mess-table thead{
+
+display:none;
+
+}
+
+
+
+.mess-table tbody,
+.mess-table tr,
+.mess-table td{
+
+display:block;
+
+width:100%;
+
+}
+
+
+
+.mess-table tr{
+
+background:white;
+
+border-radius:15px;
+
+padding:15px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+margin-bottom:15px;
+
+}
+
+
+
+.mess-table td{
+
+text-align:left;
+
+padding:10px 15px;
+
+border:none;
+
+font-size:14px;
+
+}
+
+
+
+.mess-table td::before{
+
+font-weight:700;
+
+color:#5a3e2b;
+
+display:inline-block;
+
+width:120px;
+
+}
+
+
+
+.mess-table td:nth-child(1)::before{
+
+content:"Name";
+
+}
+
+
+.mess-table td:nth-child(2)::before{
+
+content:"Location";
+
+}
+
+
+.mess-table td:nth-child(3)::before{
+
+content:"Price";
+
+}
+
+
+.mess-table td:nth-child(4)::before{
+
+content:"Rating";
+
+}
+
+
+.mess-table td:nth-child(5)::before{
+
+content:"Actions";
+
+}
+
+
+
+.action-buttons{
+
+justify-content:flex-start;
+
+margin-top:10px;
+
+}
+
+
+
+.edit-btn,
+.delete-btn{
+
+padding:8px 14px;
+
+font-size:13px;
+
+}
+
+
+
+.back-btn{
+
+left:20px;
+
+top:15px;
+
+padding:10px 18px;
+
+}
+
+
 
 }

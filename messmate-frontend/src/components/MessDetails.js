@@ -76,11 +76,7 @@ function MessDetails() {
   return (
 
     <div className="mess-details-page">
-
-
-      <div className="details-card">
-
-
+      
         <button
           className="back-btn"
           onClick={()=>navigate(-1)}
@@ -88,7 +84,7 @@ function MessDetails() {
           ← Back
         </button>
 
-
+      <div className="details-card">
 
         <div className="details-image">
 

@@ -4,7 +4,9 @@ import {AuthContext} from "../context/AuthContext";
 import toast from "react-hot-toast";
 import "./Navbar.css";
 
+
 const Navbar=()=>{
+
 
 const {user,logout}=useContext(AuthContext);
 
@@ -12,37 +14,51 @@ const navigate=useNavigate();
 
 const [menuOpen,setMenuOpen]=useState(false);
 
+
 const closeMenu=()=>{
 setMenuOpen(false);
 };
 
+
+
 const handleLogout=()=>{
+
 
 const confirmLogout=window.confirm(
 "Are you sure you want to logout?"
 );
 
+
 if(!confirmLogout)
 return;
 
+
 logout();
+
 
 toast.success(
 "Logged out successfully 👋"
 );
 
-navigate("/login");
+
+navigate("/");
+
 
 closeMenu();
+
 
 };
 
 
+
 return(
+
 
 <nav className="messmate-navbar">
 
+
 <div className="navbar-container">
+
 
 
 <Link
@@ -52,6 +68,7 @@ onClick={closeMenu}
 >
 MessMate 🍱
 </Link>
+
 
 
 
@@ -68,6 +85,7 @@ onClick={()=>setMenuOpen(!menuOpen)}
 
 
 
+
 <div
 className={
 menuOpen
@@ -79,12 +97,15 @@ menuOpen
 >
 
 
+
+
 <NavLink
 to="/"
 onClick={closeMenu}
 >
 Home
 </NavLink>
+
 
 
 <NavLink
@@ -95,6 +116,7 @@ About Us
 </NavLink>
 
 
+
 <NavLink
 to="/contact"
 onClick={closeMenu}
@@ -103,12 +125,21 @@ Contact
 </NavLink>
 
 
+
+
+{
+user &&
+
 <NavLink
 to="/messes"
 onClick={closeMenu}
 >
 Find Mess
 </NavLink>
+
+}
+
+
 
 
 
@@ -121,33 +152,9 @@ onClick={closeMenu}
 >
 Profile
 </NavLink>
-}
-
-
-
-{
-user && user.role==="owner" &&
-
-<>
-
-<NavLink
-to="/owner-dashboard"
-onClick={closeMenu}
->
-Owner Panel
-</NavLink>
-
-
-<NavLink
-to="/add-mess"
-onClick={closeMenu}
->
-Add Mess
-</NavLink>
-
-</>
 
 }
+
 
 
 
@@ -165,8 +172,11 @@ Admin Panel
 
 
 
+
+
 {
 user ?
+
 
 (
 
@@ -177,11 +187,15 @@ onClick={handleLogout}
 Logout
 </button>
 
+
 )
+
 
 :
 
+
 (
+
 
 <>
 
@@ -194,6 +208,7 @@ Login
 </Link>
 
 
+
 <Link
 className="navbar-signup"
 to="/signup"
@@ -201,6 +216,7 @@ onClick={closeMenu}
 >
 Signup
 </Link>
+
 
 
 <Link
@@ -211,21 +227,30 @@ onClick={closeMenu}
 Admin Login
 </Link>
 
+
 </>
 
+
 )
+
 
 }
 
 
-</div>
 
 </div>
+
+
+</div>
+
 
 </nav>
 
+
 );
 
+
 };
+
 
 export default Navbar;

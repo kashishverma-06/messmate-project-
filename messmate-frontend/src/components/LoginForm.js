@@ -54,16 +54,14 @@ const LoginForm = () => {
         password: form.password,
       });
 
-      login(res.data.token, res.data.role);
+      login(res.data.token);
 
       toast.success("Login successful 🎉");
 
       setTimeout(() => {
-        if(res.data.role === "owner"){
-          navigate("/owner/dashboard");
-        }else{
-        navigate("/dashboard");
-        }
+       
+        navigate("/messes");
+        
       }, 1000);
 
     } catch (err) {
