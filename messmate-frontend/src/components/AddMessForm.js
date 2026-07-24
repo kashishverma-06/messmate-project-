@@ -205,19 +205,12 @@ return(
 
 
 <div className="mess-form-container">
-
 <button
-
 type="button"
-
-className="back-btn"
-
+className="add-back-btn"
 onClick={()=>navigate("/owner-dashboard")}
-
 >
-
 ← Back Dashboard
-
 </button>
 <div className="mess-form-card">
 

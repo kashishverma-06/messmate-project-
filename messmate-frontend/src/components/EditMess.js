@@ -134,17 +134,14 @@ return(
 
 <div className="mess-form-container">
 
-
 <button
 
-className="back-btn"
+className="edit-back-btn"
 
 onClick={()=>navigate("/manage-messes")}
 
 >
-
 ← Back Manage Messes
-
 </button>
 
 
